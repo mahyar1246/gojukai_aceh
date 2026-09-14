@@ -1,0 +1,2054 @@
+<!doctype html>
+<html lang="id" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Security Headers -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN" />
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=()" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' https: data: blob: 'unsafe-inline' 'unsafe-eval'; img-src 'self' https: data: blob:; style-src 'self' https: 'unsafe-inline'; font-src 'self' https: data:; script-src 'self' https: 'unsafe-inline' 'unsafe-eval'; connect-src 'self' https: data: blob:; object-src 'none'; base-uri 'self'; form-action 'self' https://api.whatsapp.com;"
+    />
+
+    <title>Gojukai Banda Aceh — The Art of Hard and Soft</title>
+
+    <!-- Open Graph Meta Tags -->
+    <meta
+      property="og:title"
+      content="Gojukai Banda Aceh — The Art of Hard and Soft"
+    />
+    <meta
+      property="og:description"
+      content="Bergabunglah dengan Dojo Gojukai Banda Aceh. Latihan Karate-Do tradisional dengan instruktur bersertifikasi IKGA. Jadwal: Sabtu & Minggu 15.30-17.30 WIB di SMK Cut Mutia Peuniti."
+    />
+    <meta
+      property="og:image"
+      content="https://yourwebsite.com/public/hero-bg.webp"
+    />
+    <meta property="og:url" content="https://yourwebsite.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="id_ID" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Gojukai Banda Aceh — The Art of Hard and Soft"
+    />
+    <meta
+      name="twitter:description"
+      content="Bergabunglah dengan Dojo Gojukai Banda Aceh. Latihan Karate-Do tradisional dengan instruktur bersertifikasi IKGA."
+    />
+    <meta
+      name="twitter:image"
+      content="https://yourwebsite.com/public/hero-bg.webp"
+    />
+
+    <!-- Additional SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Gojukai Karate-Do Banda Aceh - Dojo resmi IKGA Indonesia. Latihan Karate tradisional dengan instruktur bersertifikasi. Jadwal: Sabtu & Minggu 15.30-17.30 WIB di SMK Cut Mutia Peuniti."
+    />
+    <meta
+      name="keywords"
+      content="Gojukai, Karate-Do, Banda Aceh, IKGA, Bela Diri, Dojo, Sabuk Hitam, Karate Indonesia"
+    />
+    <meta name="author" content="Gojukai Banda Aceh" />
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,400&family=Barlow:wght@300;400;500;600&family=IBM+Plex+Mono:wght@300;400;500&family=Noto+Serif+JP:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- GSAP + ScrollTrigger + Lenis Smooth Scroll (Deferred for Fast Mobile Parsing) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js" defer></script>
+
+    <!-- Critical Asset Preloads — fetchpriority=high for instant First Contentful Paint & Zero-Delay Splash -->
+    <link rel="preload" as="image" href="public/logo-gojukai.webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="public/hero-bg.webp" fetchpriority="high" />
+
+    <link rel="preload" href="assets/css/style.css?v=20260914-anim1" as="style" />
+    <link rel="stylesheet" href="assets/css/style.css?v=20260914-anim1" />
+  </head>
+  <body>
+    <div id="cursorDot"></div>
+    <div id="cursorRing"></div>
+
+    <!-- ── Instant Native/Custom Cursor Engine ─────────────────────────── -->
+    <script>
+      (function () {
+        var isTouch = window.matchMedia("(max-width: 1024px), (pointer: coarse)").matches || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+        if (isTouch) {
+          document.body.classList.add("native-cursor");
+          return;
+        }
+        var dot = document.getElementById("cursorDot");
+        var ring = document.getElementById("cursorRing");
+        if (!dot || !ring) return;
+
+        var mx = -200, my = -200, rx = -200, ry = -200;
+        var hasMoved = false;
+
+        window.addEventListener("mousemove", function (e) {
+          mx = e.clientX;
+          my = e.clientY;
+          if (!hasMoved) {
+            hasMoved = true;
+            rx = mx;
+            ry = my;
+            dot.style.opacity = "1";
+            ring.style.opacity = "1";
+          }
+          dot.style.left = mx + "px";
+          dot.style.top = my + "px";
+        }, { passive: true });
+
+        function loop() {
+          if (hasMoved) {
+            rx += (mx - rx) * 0.22;
+            ry += (my - ry) * 0.22;
+            ring.style.left = rx + "px";
+            ring.style.top = ry + "px";
+          }
+          requestAnimationFrame(loop);
+        }
+        requestAnimationFrame(loop);
+
+        document.addEventListener("mouseover", function (e) {
+          var target = e.target && e.target.closest("a, button, .tilt-card, .belt-card-btn, .faq-item, .quiz-option-btn, .hero-slide-dot, input, select");
+          if (target) {
+            document.body.classList.add("is-hovering");
+          }
+        }, { passive: true });
+
+        document.addEventListener("mouseout", function (e) {
+          var target = e.target && e.target.closest("a, button, .tilt-card, .belt-card-btn, .faq-item, .quiz-option-btn, .hero-slide-dot, input, select");
+          if (target) {
+            document.body.classList.remove("is-hovering");
+          }
+        }, { passive: true });
+      })();
+    </script>
+
+    <div id="splash" role="status" aria-label="Memuat halaman">
+      <img
+        class="splash-logo"
+        src="public/logo-gojukai.webp"
+        alt="Logo Gojukai"
+        onerror="this.style.display = 'none'"
+      />
+      <div class="splash-text" id="splashText" data-scramble="Gojukai Banda Aceh">
+        Gojukai Banda Aceh
+      </div>
+      <div class="splash-bar"></div>
+      <div class="splash-skip-hint">Ketuk untuk lanjut</div>
+    </div>
+
+    <!-- Inline Splash Animation Controller: 1.2s desktop, 1.6s mobile. Tap/click to skip. -->
+    <script>
+      (function () {
+        var isMobile = window.innerWidth <= 1024 || (navigator.maxTouchPoints && navigator.maxTouchPoints > 0);
+        var splashDuration = isMobile ? 1600 : 1200;
+        var dismissed = false;
+
+        function closeSplashNow() {
+          if (dismissed) return;
+          dismissed = true;
+          var s = document.getElementById("splash");
+          if (s && !s.classList.contains("hidden")) {
+            s.classList.add("hidden");
+            setTimeout(function () { s.style.display = "none"; }, 400);
+          }
+          if (typeof window.onSplashDismissed === "function") {
+            window.onSplashDismissed();
+          }
+        }
+
+        // ── Inline Scramble Effect ───────────────────────────────────────────
+        var JP_CHARS = ["剛","柔","会","空","手","道","気","勝","魂","忍","武","士",
+                        "ア","イ","ウ","エ","オ","カ","キ","ク","ケ","コ","サ","シ","ス"];
+
+        function scrambleEl(el) {
+          if (!el || el.isScrambling) return;
+          var original = el.getAttribute("data-scramble") || el.innerText.trim();
+          el.setAttribute("data-original-text", original);
+          el.isScrambling = true;
+          var step = 0;
+          var total = original.length * 3;
+          var iv = setInterval(function () {
+            el.innerText = original.split("").map(function (ch, i) {
+              if (ch === " " || ch === "·") return ch;
+              if (i < Math.floor(step / 3)) return original[i];
+              return JP_CHARS[Math.floor(Math.random() * JP_CHARS.length)];
+            }).join("");
+            step++;
+            if (step >= total) {
+              clearInterval(iv);
+              el.innerText = original;
+              el.isScrambling = false;
+            }
+          }, 35);
+        }
+
+        var splashTxt = document.getElementById("splashText");
+        if (splashTxt) scrambleEl(splashTxt);
+
+        var timer = setTimeout(closeSplashNow, splashDuration);
+
+        var sEl = document.getElementById("splash");
+        if (sEl) {
+          sEl.addEventListener("click", function () {
+            clearTimeout(timer);
+            closeSplashNow();
+          });
+          sEl.addEventListener("touchstart", function () {
+            clearTimeout(timer);
+            closeSplashNow();
+          }, { passive: true });
+        }
+
+        window.dismissSplashSafely = closeSplashNow;
+      })();
+    </script>
+
+    <div id="progress"></div>
+
+    <header class="nav" id="nav">
+      <a class="brand" href="#top">
+        <img
+          class="brand-logo"
+          src="public/logo-gojukai.webp"
+          alt="Gojukai"
+          onerror="this.style.display = 'none'"
+        />
+        <span class="brand-text">
+          <span class="brand-go">Go</span><span class="brand-jukai">jukai</span
+          ><span class="brand-aceh">Aceh</span>
+        </span>
+      </a>
+
+      <nav class="nav-center" id="navCenter">
+        <a href="#oath" data-nav>Sumpah</a>
+        <a href="#pass" data-nav>Free Pass</a>
+        <a href="#history" data-nav>Sejarah</a>
+        <a href="#achievements" data-nav>Prestasi</a>
+        <a href="#sensei" data-nav>Pelatih</a>
+        <a href="#dojo3d" data-nav>3D Dogi</a>
+        <a href="#faq" data-nav>FAQ</a>
+        <a href="#register" data-nav>Daftar</a>
+        <a href="#location" data-nav>Lokasi</a>
+        <div class="nav-indicator" id="navIndicator"></div>
+      </nav>
+
+      <div class="nav-right">
+        <button
+          class="cursor-btn"
+          id="cursorBtn"
+          aria-label="Toggle Custom Cursor"
+          title="Toggle Custom Cursor"
+        >
+          <img
+            src="public/icons/cursor.svg"
+            alt="Cursor"
+            style="width: 14px; height: 14px"
+          />
+        </button>
+        <button
+          class="audio-btn"
+          id="audioBtn"
+          aria-label="Toggle Sound"
+          title="Aktifkan Suara Audio"
+        >
+          <img
+            src="public/icons/volume-xmark.svg"
+            alt="Volume Off"
+            style="width: 14px; height: 14px"
+          />
+        </button>
+        <button class="theme-btn" id="themeBtn" aria-label="Ganti tema">
+          <img
+            src="public/icons/moon.svg"
+            alt="Moon"
+            style="width: 14px; height: 14px"
+          />
+        </button>
+        <button
+          class="cta cta-solid magnetic-btn"
+          onclick="
+            document
+              .getElementById('register')
+              .scrollIntoView({ behavior: 'smooth' })
+          "
+        >
+          Daftar
+        </button>
+      </div>
+    </header>
+
+    <nav class="nav-mobile" id="navMobile">
+      <a href="#oath" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/hand-fist.svg"
+          alt="Sumpah"
+          style="width: 16px; height: 16px"
+        /><span>Sumpah</span></a
+      >
+      <a href="#pass" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/ticket.svg"
+          alt="Pass"
+          style="width: 16px; height: 16px"
+        /><span>Pass</span></a
+      >
+      <a href="#history" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/clock-rotate-left.svg"
+          alt="Sejarah"
+          style="width: 16px; height: 16px"
+        /><span>Sejarah</span></a
+      >
+      <a href="#achievements" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/trophy.svg"
+          alt="Prestasi"
+          style="width: 16px; height: 16px"
+        /><span>Prestasi</span></a
+      >
+      <a href="#dojo3d" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/cube.svg"
+          alt="3D Dogi"
+          style="width: 16px; height: 16px"
+        /><span>3D Dogi</span></a
+      >
+      <a href="#register" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/pen-to-square.svg"
+          alt="Daftar"
+          style="width: 16px; height: 16px"
+        /><span>Daftar</span></a
+      >
+      <a href="#location" data-nav-m
+        ><img loading="lazy"
+          src="public/icons/location-dot.svg"
+          alt="Lokasi"
+          style="width: 16px; height: 16px"
+        /><span>Lokasi</span></a
+      >
+    </nav>
+
+    <main id="top">
+      <section class="hero" id="hero">
+        <div class="hero-bg-slideshow" id="heroSlideshow">
+          <div class="hero-bg-slide slide-1 is-active" style="background-image: url('public/hero-bg.webp');"></div>
+          <div class="hero-bg-slide slide-2" style="background-image: url('public/hero-bg-2.webp');"></div>
+        </div>
+        <div class="hero-vignette"></div>
+        <div class="hero-body">
+          <div class="hero-left">
+            <div class="kanji-seal">剛柔会</div>
+
+            <div class="hero-kicker">
+              <span class="bar"></span>
+              <span class="eyebrow scramble-text" data-scramble
+                >Est. 1950 · Yamaguchi lineage · Banda Aceh · 剛柔会</span
+              >
+            </div>
+
+            <h1 class="hero-title" id="heroTitle">
+              <span class="lock">
+                <span class="brand-red">Go</span
+                ><span class="brand-white">jukai</span>
+                <span class="brand-red">Aceh</span>
+              </span>
+              <span class="sub"
+                >The art of <em>hard</em> and <em>soft</em></span
+              >
+            </h1>
+
+            <div class="hero-meta">
+              <p class="lede">
+                <span class="highlight-red">Sanchin</span> membangun tubuh yang
+                menjadi fondasi segala teknik. Sebelum pukulan pertama, sebelum
+                kata pertama, hanya ada sikap, napas, dan ketegangan yang tepat.
+              </p>
+            </div>
+
+            <div class="hero-bottom-row">
+              <button
+                class="cta cta-gold magnetic-btn"
+                onclick="
+                  document
+                    .getElementById('pass')
+                    .scrollIntoView({ behavior: 'smooth' })
+                "
+              >
+                <img
+                  src="public/icons/ticket.svg"
+                  alt="Ticket"
+                  style="
+                    width: 14px;
+                    height: 14px;
+                    display: inline-block;
+                    margin-right: 4px;
+                  "
+                />
+                Klaim Pass Gratis
+              </button>
+              <div class="hero-scroll">
+                <span class="line"></span> Scroll to enter dojo
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="glass-pod">
+              <div class="countdown-box">
+                <div class="countdown-label">
+                  <img
+                    src="public/icons/clock.svg"
+                    alt="Clock"
+                    style="
+                      width: 12px;
+                      height: 12px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Latihan Berikutnya:
+                  <span class="countdown-day-label" id="heroCountdownDay"
+                    >SABTU</span
+                  >
+                </div>
+                <div class="countdown-timer" id="heroCountdownTimer">
+                  <div class="countdown-unit" id="cdDays">
+                    00 <span>HARI</span>
+                  </div>
+                  :
+                  <div class="countdown-unit" id="cdHours">
+                    00 <span>JAM</span>
+                  </div>
+                  :
+                  <div class="countdown-unit" id="cdMins">
+                    00 <span>MENIT</span>
+                  </div>
+                  :
+                  <div class="countdown-unit" id="cdSecs">
+                    00 <span>DETIK</span>
+                  </div>
+                </div>
+              </div>
+              <div
+                style="
+                  width: 100%;
+                  height: 1px;
+                  background: rgba(245, 245, 247, 0.1);
+                  margin: 4px 0;
+                "
+              ></div>
+              <div class="dropdown-wrap" style="width: 100%">
+                <button
+                  class="cta magnetic-btn"
+                  style="
+                    width: 100%;
+                    padding: 8px;
+                    font-size: 10px;
+                    border-color: var(--gold);
+                    color: var(--gold);
+                  "
+                >
+                  <img
+                    src="public/icons/calendar-plus.svg"
+                    alt="Calendar"
+                    style="
+                      width: 12px;
+                      height: 12px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Ingatkan Saya
+                </button>
+                <div class="dropdown-menu">
+                  <a href="#" class="dropdown-item" id="linkGoogleCal">
+                    <img loading="lazy"
+                      src="public/icons/google.svg"
+                      alt="Google"
+                      style="width: 14px; height: 14px"
+                    />
+                    Google Calendar
+                  </a>
+                  <a href="#" class="dropdown-item" id="linkIcsCal">
+                    <img loading="lazy"
+                      src="public/icons/calendar-days.svg"
+                      alt="Calendar"
+                      style="width: 14px; height: 14px"
+                    />
+                    Apple / Outlook (.ics)
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HERO SLIDESHOW 15S NAV CONTROLS -->
+        <div class="hero-slide-nav" id="heroSlideNav">
+          <div class="hero-slide-nav-label">
+            <span class="slide-nav-tag">DOJO LIVE</span>
+            <span class="slide-nav-kanji">剛柔</span>
+          </div>
+          <div class="hero-slide-dots-wrap">
+            <button class="hero-slide-dot is-active" data-slide="0" aria-label="Slide 1: Tradisi Dojo">
+              <span class="dot-num">01</span>
+              <span class="dot-text">Tradisi</span>
+              <span class="slide-dot-progress"><span class="slide-dot-bar"></span></span>
+            </button>
+            <button class="hero-slide-dot" data-slide="1" aria-label="Slide 2: Pembentukan Karakter">
+              <span class="dot-num">02</span>
+              <span class="dot-text">Karakter</span>
+              <span class="slide-dot-progress"><span class="slide-dot-bar"></span></span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats-section">
+        <div class="wrap">
+          <div class="stats-grid">
+            <div class="stat-card tilt-card">
+              <div class="stat-num" data-target="150">0</div>
+              <div class="stat-label">Murid Aktif Dojo</div>
+            </div>
+            <div class="stat-card tilt-card">
+              <div class="stat-num" data-target="5">0</div>
+              <div class="stat-label">Pelatih Sabuk Hitam</div>
+            </div>
+            <div class="stat-card tilt-card">
+              <div class="stat-num" data-target="1950">0</div>
+              <div class="stat-label">Tradisi IKGA Sejak</div>
+            </div>
+            <div class="stat-card tilt-card">
+              <div class="stat-num" data-target="100">0</div>
+              <div class="stat-label">% Dedikasi Karakter</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section oath-section" id="oath">
+        <div class="wrap oath-header">
+          <span class="kanji-mark scramble-text" data-scramble
+            >空手訓 · Karate-kun</span
+          >
+          <h2
+            style="margin-top: 14px"
+            class="oath-title-anim scramble-text"
+            id="oathTitle"
+            data-scramble
+          >
+            Lima Sumpah Karate-Do
+          </h2>
+          <p class="lede">Arahkan kursor ke kartu untuk melihat detail.</p>
+        </div>
+        <div class="wrap" style="margin-top: 40px">
+          <div class="oath-grid" id="oathGrid"></div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="section pass-section" id="pass">
+        <div class="wrap text-center">
+          <span class="kanji-mark scramble-text" data-scramble
+            >無料体験 · Free Trial</span
+          >
+          <h2 style="margin-top: 14px">Pass Latihan Gratis 1x</h2>
+          <p class="lede" style="margin: 12px auto 0; text-align: center">
+            Ingin mencoba suasana latihan karate sebelum mendaftar resmi? Klaim
+            Pass Gratis Anda di bawah ini.
+          </p>
+
+          <div class="ticket-wrapper">
+            <div class="ticket-card tilt-card" id="ticketCard">
+              <span class="ticket-notch-top"></span>
+              <span class="ticket-notch-bottom"></span>
+
+              <div class="ticket-left" style="text-align: left">
+                <div class="eyebrow" style="color: var(--gold)">
+                  <img loading="lazy"
+                    src="public/icons/certificate.svg"
+                    alt="Certificate"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Official Voucher Dojo Banda Aceh
+                </div>
+                <h3 style="margin-top: 10px">1-Day Guest Training Pass</h3>
+                <p
+                  style="font-size: 14px; color: var(--fg-dim); margin-top: 8px"
+                >
+                  Berlaku untuk 1 kali sesi latihan di Dojo SMK Cut Mutia
+                  Peuniti.
+                </p>
+                <div class="ticket-code" id="ticketCodeDisplay">
+                  GOJU-PASS-UNCLAIMED
+                </div>
+                <div
+                  style="
+                    font-family: &quot;IBM Plex Mono&quot;, monospace;
+                    font-size: 10px;
+                    color: var(--fg-muted);
+                  "
+                >
+                  *Tidak dipungut biaya apapun untuk sesi percobaan ini.
+                </div>
+              </div>
+
+              <div class="ticket-right">
+                <img loading="lazy"
+                  src="public/icons/ticket-simple.svg"
+                  alt="Ticket"
+                  style="
+                    width: 36px;
+                    height: 36px;
+                    color: var(--gold);
+                    margin-bottom: 12px;
+                  "
+                />
+                <button
+                  class="cta cta-gold magnetic-btn"
+                  id="claimPassBtn"
+                  style="width: 100%"
+                >
+                  <img loading="lazy"
+                    src="public/icons/bolt.svg"
+                    alt="Bolt"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Klaim Sekarang
+                </button>
+                <div id="activeBadge" class="voucher-active-badge">
+                  <img loading="lazy"
+                    src="public/icons/check-circle.svg"
+                    alt="Check"
+                    style="
+                      width: 12px;
+                      height: 12px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  VOUCHER AKTIF
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="section quiz-section" id="quiz">
+        <div class="wrap text-center">
+          <span class="kanji-mark scramble-text" data-scramble
+            >適性診断 · Interactive Quiz</span
+          >
+          <h2 style="margin-top: 14px">Apakah Karate Cocok Untuk Anda?</h2>
+          <p class="lede" style="margin: 12px auto 0; text-align: center">
+            Jawab 3 pertanyaan singkat untuk menemukan rekomendasi kelas.
+          </p>
+
+          <div class="quiz-card">
+            <div class="quiz-progress-bar">
+              <div class="quiz-progress-fill" id="quizProgressFill"></div>
+            </div>
+
+            <div class="quiz-step" id="quizStep1">
+              <div
+                class="eyebrow"
+                style="margin-bottom: 10px; color: var(--gold)"
+              >
+                Pertanyaan 1 dari 3
+              </div>
+              <div class="quiz-question-title">Berapa Usia Calon Murid?</div>
+              <div class="quiz-options">
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(1, 'anak')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/child.svg"
+                      alt="Child"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    6 – 12 Tahun (Usia Dini)
+                  </div>
+                  <div class="quiz-option-desc">
+                    Fokus pada pembentukan karakter dan kedisiplinan.
+                  </div>
+                </button>
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(1, 'remaja')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/user-graduate.svg"
+                      alt="Graduate"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    13 – 18 Tahun (Remaja)
+                  </div>
+                  <div class="quiz-option-desc">
+                    Fokus pada teknik fisik dan prestasi.
+                  </div>
+                </button>
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(1, 'dewasa')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/user-shield.svg"
+                      alt="Shield"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    > 18 Tahun (Dewasa)
+                  </div>
+                  <div class="quiz-option-desc">
+                    Fokus pada bela diri praktis dan stamina.
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="quiz-step" id="quizStep2" style="display: none">
+              <div
+                class="eyebrow"
+                style="margin-bottom: 10px; color: var(--gold)"
+              >
+                Pertanyaan 2 dari 3
+              </div>
+              <div class="quiz-question-title">Apa Tujuan Utama Anda?</div>
+              <div class="quiz-options">
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(2, 'beladiri')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/shield-halved.svg"
+                      alt="Shield"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    Bela Diri
+                  </div>
+                  <div class="quiz-option-desc">
+                    Mempelajari teknik pertahanan nyata.
+                  </div>
+                </button>
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(2, 'prestasi')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/trophy.svg"
+                      alt="Trophy"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    Prestasi
+                  </div>
+                  <div class="quiz-option-desc">
+                    Ingin bertanding di turnamen resmi.
+                  </div>
+                </button>
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(2, 'karakter')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/heart-pulse.svg"
+                      alt="Heart"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    Karakter
+                  </div>
+                  <div class="quiz-option-desc">
+                    Membina mental pantang menyerah.
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="quiz-step" id="quizStep3" style="display: none">
+              <div
+                class="eyebrow"
+                style="margin-bottom: 10px; color: var(--gold)"
+              >
+                Pertanyaan 3 dari 3
+              </div>
+              <div class="quiz-question-title">Pernah Belajar Beladiri?</div>
+              <div class="quiz-options">
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(3, 'pemula')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/seedling.svg"
+                      alt="Seedling"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    Pemula
+                  </div>
+                  <div class="quiz-option-desc">
+                    Akan dibimbing dari gerak dasar.
+                  </div>
+                </button>
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(3, 'pernah_karate')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/hand-fist.svg"
+                      alt="Fist"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    Pernah Karate
+                  </div>
+                  <div class="quiz-option-desc">
+                    Lanjutkan jenjang sabuk di Gojukai.
+                  </div>
+                </button>
+                <button
+                  class="quiz-option-btn magnetic-btn"
+                  onclick="answerQuiz(3, 'beladiri_lain')"
+                >
+                  <div class="quiz-option-title">
+                    <img loading="lazy"
+                      src="public/icons/person-falling-burst.svg"
+                      alt="Falling"
+                      style="
+                        width: 16px;
+                        height: 16px;
+                        display: inline-block;
+                        margin-right: 8px;
+                      "
+                    />
+                    Beladiri Lain
+                  </div>
+                  <div class="quiz-option-desc">
+                    Latar belakang Silat/Judo dll.
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            <div class="quiz-result-box" id="quizResultBox">
+              <img loading="lazy"
+                src="public/icons/award.svg"
+                alt="Award"
+                style="
+                  width: 42px;
+                  height: 42px;
+                  color: var(--gold);
+                  margin-bottom: 12px;
+                "
+              />
+              <div
+                class="eyebrow"
+                style="color: var(--gold); margin-bottom: 6px"
+              >
+                Rekomendasi
+              </div>
+              <h3
+                id="quizResultTitle"
+                style="font-size: 28px; margin-bottom: 12px"
+              >
+                Program Pemula
+              </h3>
+              <p
+                id="quizResultDesc"
+                style="
+                  color: var(--fg-dim);
+                  max-width: 560px;
+                  margin: 0 auto 20px;
+                  font-size: 15px;
+                "
+              >
+                Sangat cocok untuk membangun kedisiplinan dan teknik dasar.
+              </p>
+              <div
+                style="
+                  display: flex;
+                  gap: 12px;
+                  justify-content: center;
+                  flex-wrap: wrap;
+                "
+              >
+                <button class="cta cta-wa magnetic-btn" id="quizWaBtn">
+                  <img loading="lazy"
+                    src="public/icons/whatsapp.svg"
+                    alt="WhatsApp"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Daftar Sesuai Hasil
+                </button>
+                <button class="cta magnetic-btn" onclick="resetQuiz()">
+                  <img loading="lazy"
+                    src="public/icons/rotate-left.svg"
+                    alt="Rotate"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Ulangi
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="section history-section" id="history">
+        <div class="wrap">
+          <div
+            style="
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+              gap: clamp(32px, 5vw, 80px);
+              align-items: start;
+            "
+          >
+            <div class="history-intro">
+              <span class="kanji-mark scramble-text" data-scramble
+                >国際剛柔会 · IKGA</span
+              >
+              <h2 style="margin-top: 14px">
+                Sejarah<br />International Karate-Do<br />Gojukai Association
+              </h2>
+              <p class="lede" style="margin-top: 20px">
+                Dari garis keturunan Chojun Miyagi hingga komitmen di Banda
+                Aceh.
+              </p>
+            </div>
+            <div class="history-timeline" id="historyTimeline"></div>
+          </div>
+
+          <div
+            class="history-photos marquee-track"
+            aria-label="Galeri sejarah Gojukai"
+          >
+            <div class="history-photo-item tilt-card katana-reveal">
+              <img loading="lazy"
+                src="public/history-1.webp"
+                alt="Sejarah 1"
+                onerror="
+                  this.src =
+                    'https://placehold.co/400x250/131315/8E8E95?text=Dojo+Gojukai'
+                "
+              />
+              <div class="history-photo-caption">
+                Kejuaraan Dunia — Chiba 1993
+              </div>
+            </div>
+            <div class="history-photo-item tilt-card katana-reveal">
+              <img loading="lazy"
+                src="public/history-2.webp"
+                alt="Sejarah 2"
+                onerror="
+                  this.src =
+                    'https://placehold.co/400x250/131315/8E8E95?text=Dojo+Gojukai'
+                "
+              />
+              <div class="history-photo-caption">
+                Kejuaraan Dunia — Jakarta 2010
+              </div>
+            </div>
+            <div class="history-photo-item tilt-card katana-reveal">
+              <img loading="lazy"
+                src="public/history-3.webp"
+                alt="Sejarah 3"
+                onerror="
+                  this.src =
+                    'https://placehold.co/400x250/131315/8E8E95?text=Dojo+Gojukai'
+                "
+              />
+              <div class="history-photo-caption">
+                Pendirian Dojo Banda Aceh 2021
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LIGHTBOX MODAL -->
+      <div class="lightbox" id="lightbox">
+        <button
+          class="lightbox-close"
+          id="lightboxClose"
+          aria-label="Close Lightbox"
+        >
+          <img loading="lazy"
+            src="public/icons/xmark.svg"
+            alt="Close"
+            style="width: 24px; height: 24px"
+          />
+        </button>
+        <button
+          class="lightbox-nav lightbox-prev"
+          id="lightboxPrev"
+          aria-label="Previous Image"
+        >
+          <img loading="lazy"
+            src="public/icons/chevron-left.svg"
+            alt="Previous"
+            style="width: 20px; height: 20px"
+          />
+        </button>
+        <img loading="lazy" id="lightboxImg" src="" alt="Gallery Image" />
+        <button
+          class="lightbox-nav lightbox-next"
+          id="lightboxNext"
+          aria-label="Next Image"
+        >
+          <img loading="lazy"
+            src="public/icons/chevron-right.svg"
+            alt="Next"
+            style="width: 20px; height: 20px"
+          />
+        </button>
+      </div>
+
+      <section class="section achievement-section" id="achievements">
+        <div class="wrap">
+          <div class="text-center">
+            <span class="kanji-mark scramble-text" data-scramble
+              >功績 · Achievements</span
+            >
+            <h2 style="margin-top: 14px">Prestasi &amp; Penghargaan</h2>
+            <p class="lede" style="margin: 12px auto 0; text-align: center">
+              Jejak langkah kejuaraan dan dedikasi karateka Gojukai Banda Aceh.
+            </p>
+          </div>
+
+          <div class="achievement-showcase">
+            <div class="achievement-viewer" id="achievementViewer">
+              <div class="achievement-image-wrapper">
+                <img loading="lazy"
+                  id="achievementImage"
+                  src=""
+                  alt="Achievement"
+                  onerror="this.src='https://placehold.co/800x500/131315/D4AF37?text=Prestasi+Gojukai'"
+                />
+                <div class="achievement-progress-bar">
+                  <div class="achievement-progress-fill" id="achievementProgress"></div>
+                </div>
+                <!-- METADATA BADGE OVERLAY (GLASSMORPHISM) -->
+                <div class="achievement-meta-overlay">
+                  <div class="meta-row">
+                    <span class="meta-label">Nama</span>
+                    <span class="meta-value" id="metaAthlete">-</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">Penghargaan</span>
+                    <span class="meta-value" id="metaAward">-</span>
+                  </div>
+                  <div class="meta-row">
+                    <span class="meta-label">Lomba</span>
+                    <span class="meta-value" id="metaEvent">-</span>
+                  </div>
+                </div>
+              </div>
+              <!-- CONTINUOUS RUNNING TEXT (MARQUEE BANNER) -->
+              <div class="achievement-marquee" id="achievementMarquee" title="Hover to pause">
+                <div class="marquee-track" id="marqueeTrack">
+                  <span class="marquee-item" id="marqueeText">-</span>
+                  <span class="marquee-item" id="marqueeTextClone1">-</span>
+                  <span class="marquee-item" id="marqueeTextClone2">-</span>
+                  <span class="marquee-item" id="marqueeTextClone3">-</span>
+                </div>
+              </div>
+              <div class="achievement-info">
+                <div class="achievement-meta">
+                  <span class="achievement-category" id="achievementCategory">Kata</span>
+                  <span class="achievement-year" id="achievementYear">2024</span>
+                  <span class="achievement-award" id="achievementAward">Juara 1</span>
+                </div>
+                <h3 class="achievement-event" id="achievementEvent">Kejuaraan Karate Aceh Open 2024</h3>
+                <button
+                  class="cta cta-outline-gold magnetic-btn achievement-view-all-btn"
+                  id="viewAllBtn"
+                  style="margin-top: 16px"
+                >
+                  <img loading="lazy"
+                    src="public/icons/trophy.svg"
+                    alt="Gallery"
+                    style="width: 14px; height: 14px; display: inline-block; margin-right: 6px"
+                  />
+                  Lihat Semua Galeri Prestasi &amp; Event
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACHIEVEMENT MODAL -->
+      <div class="achievement-modal" id="achievementModal">
+        <div class="achievement-modal-overlay" id="achievementModalOverlay"></div>
+        <div class="achievement-modal-content">
+          <button
+            class="achievement-modal-close"
+            id="achievementModalClose"
+            aria-label="Close Modal"
+          >
+            <img loading="lazy"
+              src="public/icons/xmark.svg"
+              alt="Close"
+              style="width: 24px; height: 24px"
+            />
+          </button>
+          <div class="achievement-modal-header">
+            <div class="achievement-modal-header-top">
+              <div class="modal-title-group">
+                <span class="modal-kicker">功績 · Gallery Prestasi</span>
+                <h3 id="modalEventTitle">Semua Prestasi &amp; Kejuaraan</h3>
+              </div>
+              <div class="modal-dropdown-container">
+                <label for="modalEventSelect" class="modal-dropdown-label">PILIH EVENT / LOMBA:</label>
+                <div class="modal-select-wrapper">
+                  <select id="modalEventSelect" class="modal-event-select" aria-label="Pilih Event Prestasi">
+                    <option value="all">🏆 Semua Event &amp; Kejuaraan</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="achievement-modal-meta">
+              <span id="modalCategory">14 Atlet Berprestasi</span>
+              <span id="modalYear">2025</span>
+            </div>
+          </div>
+          <div class="achievement-modal-gallery" id="modalGallery"></div>
+        </div>
+      </div>
+
+      <section class="section sensei-section" id="sensei">
+        <div class="wrap">
+          <div class="text-center">
+            <span class="kanji-mark scramble-text" data-scramble
+              >指導員 · Instructors</span
+            >
+            <h2 style="margin-top: 14px">Pelatih &amp; Instruktur Dojo</h2>
+            <p class="lede" style="margin: 12px auto 0; text-align: center">
+              Dipimpin oleh instruktur bersertifikasi resmi IKGA.
+            </p>
+          </div>
+
+          <div class="sensei-grid">
+            <div class="sensei-card tilt-card katana-reveal">
+              <div class="sensei-avatar-wrapper">
+                <div class="sensei-crest-frame gold-frame">
+                  <img loading="lazy"
+                    class="sensei-avatar"
+                    src="public/logo-gojukai.webp"
+                    alt="Sensei Duta"
+                  />
+                  <div class="sensei-kanji-seal">師</div>
+                </div>
+              </div>
+              <div class="sensei-name">Sensei Duta</div>
+              <div class="sensei-dan">DAN IV IKGA · KEPALA PELATIH</div>
+              <p class="sensei-quote">
+                "Karate bukan tentang mengalahkan orang lain, tetapi menundukkan
+                ego diri sendiri."
+              </p>
+              <span class="sensei-badge">Spesialis Kata &amp; Bunkai</span>
+            </div>
+
+            <div class="sensei-card tilt-card katana-reveal">
+              <div class="sensei-avatar-wrapper">
+                <div class="sensei-crest-frame red-frame">
+                  <img loading="lazy"
+                    class="sensei-avatar"
+                    src="public/logo-gojukai.webp"
+                    alt="Sensei Nico"
+                  />
+                  <div class="sensei-kanji-seal">武</div>
+                </div>
+              </div>
+              <div class="sensei-name">Sensei Nico</div>
+              <div class="sensei-dan">DAN II IKGA · INSTRUKTUR</div>
+              <p class="sensei-quote">
+                "Kecepatan dan ketepatan lahir dari ketenangan pikiran yang terlatih."
+              </p>
+              <span class="sensei-badge">Spesialis Kumite Tanding</span>
+            </div>
+
+            <div class="sensei-card tilt-card katana-reveal">
+              <div class="sensei-avatar-wrapper">
+                <div class="sensei-crest-frame">
+                  <img loading="lazy"
+                    class="sensei-avatar"
+                    src="public/logo-gojukai.webp"
+                    alt="Sensei Adrian"
+                  />
+                  <div class="sensei-kanji-seal">育</div>
+                </div>
+              </div>
+              <div class="sensei-name">Sensei Adrian</div>
+              <div class="sensei-dan">DAN I IKGA · PELATIH MUDA</div>
+              <p class="sensei-quote">
+                "Membangun kedisiplinan sejak dini membentuk karakter tangguh seumur hidup."
+              </p>
+              <span class="sensei-badge">Pembinaan Usia Dini</span>
+            </div>
+
+            <div class="sensei-card tilt-card katana-reveal">
+              <div class="sensei-avatar-wrapper">
+                <div class="sensei-crest-frame">
+                  <img loading="lazy"
+                    class="sensei-avatar"
+                    src="public/logo-gojukai.webp"
+                    alt="Sensei Mirza"
+                  />
+                  <div class="sensei-kanji-seal">技</div>
+                </div>
+              </div>
+              <div class="sensei-name">Sensei Mirza</div>
+              <div class="sensei-dan">DAN II IKGA · ASISTEN PELATIH</div>
+              <p class="sensei-quote">
+                "Kekuatan sejati lahir dari konsistensi dan penyempurnaan setiap detail gerak."
+              </p>
+              <span class="sensei-badge">Spesialis Teknik Dasar</span>
+            </div>
+
+            <div class="sensei-card tilt-card katana-reveal">
+              <div class="sensei-avatar-wrapper">
+                <div class="sensei-crest-frame">
+                  <img loading="lazy"
+                    class="sensei-avatar"
+                    src="public/logo-gojukai.webp"
+                    alt="Sensei Ichwaldi"
+                  />
+                  <div class="sensei-kanji-seal">氣</div>
+                </div>
+              </div>
+              <div class="sensei-name">Sensei Ichwaldi</div>
+              <div class="sensei-dan">DAN I IKGA · PELATIH FISIK</div>
+              <p class="sensei-quote">
+                "Ketahanan tubuh dan mental pantang menyerah adalah perisai terbaik dalam latihan."
+              </p>
+              <span class="sensei-badge">Kondisioning Fisik &amp; Stamina</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <section class="section stage-section" id="dojo3d">
+        <div class="wrap">
+          <div
+            style="text-align: center; max-width: 720px; margin: 0 auto 36px"
+          >
+            <span class="kanji-mark scramble-text" data-scramble
+              >道着 · 3D Dogi &amp; 帯 · Belts</span
+            >
+            <h2 style="margin-top: 10px">Dojo 3D &amp; Portal Sabuk</h2>
+            <p class="lede" style="margin: 12px auto 0; text-align: center">
+              Visualisasi 3D Baju Karate (Dogi) interaktif.
+            </p>
+          </div>
+
+          <div class="stage-component" id="stageComponentViewport">
+            <div class="stage-viewport">
+              <span class="stage-corner tl"></span
+              ><span class="stage-corner tr"></span>
+              <span class="stage-corner bl"></span
+              ><span class="stage-corner br"></span>
+
+              <canvas class="stage-canvas" id="dogi3dCanvas"></canvas>
+
+              <div class="hud-overlay">
+                <div>
+                  MODEL · <b>DOGI KARATE</b> <span class="jp">道着</span>
+                </div>
+                <div>
+                  SABUK ·
+                  <b id="hudBeltLabel" style="color: var(--gold)"
+                    >SABUK PUTIH</b
+                  >
+                </div>
+                <div>YAW · <b id="hudYawDegree">0°</b></div>
+              </div>
+
+              <!-- On-Demand Poster — hidden only after user clicks "Lihat 3D" -->
+              <div class="dogi3d-poster" id="dogi3dPoster">
+                <div class="dogi3d-poster-inner">
+                  <div class="dogi3d-poster-icon">⛩️</div>
+                  <p class="dogi3d-poster-title">Visualisasi 3D Interaktif</p>
+                  <p class="dogi3d-poster-sub">Model Dogi Karate · Draco compressed · ~4 MB</p>
+                  <button class="cta cta-gold magnetic-btn" id="btn3DActivate">
+                    <span style="margin-right:6px;">▶</span> Lihat 3D
+                  </button>
+                  <p class="dogi3d-poster-hint">File model akan diunduh saat tombol ditekan</p>
+                </div>
+              </div>
+
+              <div class="loading-3d hidden" id="loading3D">
+                <div class="spinner-3d"></div>
+                <span class="eyebrow">Memuat 3D Dogi Model...</span>
+              </div>
+            </div>
+
+            <div class="stage-bar">
+              <div
+                style="
+                  display: flex;
+                  gap: 8px;
+                  flex-wrap: wrap;
+                  align-items: center;
+                "
+              >
+                <button class="cta magnetic-btn" id="resetCamBtn">
+                  <img loading="lazy"
+                    src="public/icons/arrows-rotate.svg"
+                    alt="Reset"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Reset
+                </button>
+                <button class="cta magnetic-btn" id="toggleRotateBtn">
+                  <img loading="lazy"
+                    src="public/icons/sync.svg"
+                    alt="Auto"
+                    style="
+                      width: 14px;
+                      height: 14px;
+                      display: inline-block;
+                      margin-right: 4px;
+                    "
+                  />
+                  Auto
+                </button>
+                <div class="preset-pills" style="margin-left: 12px">
+                  <span class="eyebrow" style="margin-right: 4px"
+                    >Lighting:</span
+                  >
+                  <button class="preset-btn is-active" data-preset="studio">
+                    Studio
+                  </button>
+                  <button class="preset-btn" data-preset="sunset">
+                    Sunset
+                  </button>
+                  <button class="preset-btn" data-preset="dramatic">
+                    Dramatic
+                  </button>
+                </div>
+              </div>
+              <span class="eyebrow"
+                ><img loading="lazy"
+                  src="public/icons/hand-pointer.svg"
+                  alt="Pointer"
+                  style="
+                    width: 12px;
+                    height: 12px;
+                    display: inline-block;
+                    margin-right: 4px;
+                  "
+                />
+                Seret · Scroll zoom</span
+              >
+            </div>
+
+            <div class="belt-selector-box">
+              <div
+                class="eyebrow"
+                style="margin-bottom: 14px; color: var(--gold)"
+              >
+                Pilih Tingkatan Sabuk:
+              </div>
+              <div class="belt-grid-cards" id="beltGridCards"></div>
+              <div class="syllabus-box" id="syllabusBox">
+                <div class="syllabus-header">
+                  <span class="syllabus-title" id="syllabusTitle"
+                    >Silabus Sabuk Putih</span
+                  >
+                  <span
+                    class="eyebrow"
+                    id="syllabusRank"
+                    style="color: var(--gold)"
+                    >Mukyu</span
+                  >
+                </div>
+                <div class="syllabus-grid" id="syllabusGrid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section faq-section" id="faq">
+        <div class="wrap">
+          <div class="text-center">
+            <span class="kanji-mark scramble-text" data-scramble
+              >質問 · Q&amp;A</span
+            >
+            <h2 style="margin-top: 14px">Pertanyaan Sering Diajukan</h2>
+            <p class="lede" style="margin: 12px auto 0; text-align: center">
+              Arahkan kursor (Desktop) untuk melihat jawaban.
+            </p>
+          </div>
+
+          <div class="faq-container" id="faqContainer">
+            <div class="faq-item is-open">
+              <div class="faq-question">
+                Berapa batas usia minimal bergabung?
+                <img loading="lazy"
+                  src="public/icons/chevron-down.svg"
+                  alt="Chevron"
+                  class="faq-icon"
+                  style="width: 14px; height: 14px"
+                />
+              </div>
+              <div class="faq-answer">
+                Usia minimal untuk bergabung di Dojo Gojukai Banda Aceh adalah 6
+                tahun.
+                <div class="faq-running-line">
+                  <span
+                    >Kami memiliki kelas khusus pemula dan usia dini · Didukung
+                    pelatih sabuk hitam resmi ·
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                Apakah harus langsung punya Baju Karate (Dogi)?
+                <img loading="lazy"
+                  src="public/icons/chevron-down.svg"
+                  alt="Chevron"
+                  class="faq-icon"
+                  style="width: 14px; height: 14px"
+                />
+              </div>
+              <div class="faq-answer">
+                Tidak wajib pada latihan pertama. Gunakan pakaian olahraga untuk
+                2–3 kali latihan awal.
+                <div class="faq-running-line">
+                  <span
+                    >Pakaian olahraga kaos & celana training diperbolehkan ·
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                Bagaimana jika pindah dari perguruan lain?
+                <img loading="lazy"
+                  src="public/icons/chevron-down.svg"
+                  alt="Chevron"
+                  class="faq-icon"
+                  style="width: 14px; height: 14px"
+                />
+              </div>
+              <div class="faq-answer">
+                Karateka pemegang sabuk dari perguruan lain dapat melampirkan
+                sertifikat/ijazah untuk dievaluasi.
+                <div class="faq-running-line">
+                  <span>Evaluasi dilakukan oleh Tim Pelatih Gojukai · </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="faq-item">
+              <div class="faq-question">
+                Kapan latihan rutin?
+                <img loading="lazy"
+                  src="public/icons/chevron-down.svg"
+                  alt="Chevron"
+                  class="faq-icon"
+                  style="width: 14px; height: 14px"
+                />
+              </div>
+              <div class="faq-answer">
+                Latihan rutin diadakan di SMK Cut Mutia, Peuniti setiap Sabtu &
+                Minggu (15.30 - 17.30 WIB).
+                <div class="faq-running-line">
+                  <span
+                    >Jadwal tetap setiap minggu · Lokasi SMK Cut Mutia Peuniti ·
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section wa-section" id="register">
+        <div class="wrap">
+          <div class="wa-intro">
+            <div class="wa-luxury-badge">
+              <span class="badge-dot"></span>
+              <span class="badge-kanji">剛柔会 · 門下生募集</span>
+              <span class="badge-sep">/</span>
+              <span class="badge-text">OFFICIAL DOJO ENROLLMENT 2026</span>
+            </div>
+            <h2 style="margin-top: 16px">Formulir Pendaftaran Siswa Baru</h2>
+            <p class="lede" style="margin-top: 14px">
+              Bergabunglah dengan tradisi Karate-Do Gojukai Aceh. Formulir resmi ini langsung terhubung dengan Admin &amp; Sensei Dojo.
+            </p>
+          </div>
+
+          <div class="wa-layout" style="margin-top: 44px">
+            <div class="wa-form-wrapper">
+              <div class="wa-form">
+                <div class="wa-form-head">
+                  <div class="form-head-title">
+                    <img
+                      class="form-head-logo"
+                      src="public/logo-gojukai.webp"
+                      alt="Logo Gojukai"
+                      onerror="this.style.display='none'"
+                    />
+                    <div>
+                      <span class="eyebrow" style="color: var(--gold); font-weight: 700; letter-spacing: 0.12em;">DATA PENDAFTARAN DOJO</span>
+                      <span class="form-head-sub">Terakreditasi PB IKGA · Cabang Banda Aceh</span>
+                    </div>
+                  </div>
+                  <div class="form-head-status">
+                    <span class="status-indicator-live"></span>
+                    <span>PENDAFTARAN DIBUKA</span>
+                  </div>
+                </div>
+                <div class="wa-form-body">
+                  <div id="voucherAlertBanner" class="voucher-banner hidden">
+                    <img loading="lazy"
+                      src="public/icons/certificate.svg"
+                      alt="Certificate"
+                      style="width: 16px; height: 16px"
+                    />
+                    <span
+                      ><b>Voucher Aktif!</b> Anda berhak mengikuti 1x Sesi
+                      Latihan Gratis.</span
+                    >
+                  </div>
+
+                  <div class="field-row">
+                    <div class="field">
+                      <label for="waName">
+                        <img loading="lazy" src="public/icons/user.svg" alt="User" class="field-label-icon" />
+                        Nama Lengkap Calon Siswa
+                      </label>
+                      <input
+                        type="text"
+                        id="waName"
+                        placeholder="Contoh: Muhammad Ahyar"
+                        autocomplete="name"
+                        maxlength="60"
+                        required
+                      />
+                    </div>
+                    <div class="field">
+                      <label for="waAge">
+                        <img loading="lazy" src="public/icons/calendar.svg" alt="Age" class="field-label-icon" />
+                        Usia (Tahun)
+                      </label>
+                      <input
+                        type="number"
+                        id="waAge"
+                        placeholder="Contoh: 17"
+                        min="5"
+                        max="99"
+                        required
+                      />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label for="waAlamat">
+                      <img loading="lazy" src="public/icons/location-dot.svg" alt="Location" class="field-label-icon" />
+                      Alamat Domisili / Kota
+                    </label>
+                    <input
+                      type="text"
+                      id="waAlamat"
+                      placeholder="Contoh: Jl. Teuku Nyak Arief, Banda Aceh"
+                      autocomplete="street-address"
+                      maxlength="120"
+                      required
+                    />
+                  </div>
+                  <div class="field-row">
+                    <div class="field">
+                      <label for="waDogi">
+                        <img loading="lazy" src="public/icons/shirt.svg" alt="Dogi" class="field-label-icon" />
+                        Ukuran Dogi (Seragam)
+                      </label>
+                      <select id="waDogi" required>
+                        <option value="">— Pilih Ukuran Seragam —</option>
+                        <option value="S">S (Tinggi 140 - 150 cm)</option>
+                        <option value="M">M (Tinggi 151 - 160 cm)</option>
+                        <option value="L">L (Tinggi 161 - 170 cm)</option>
+                        <option value="XL">XL (Tinggi 171 - 180 cm)</option>
+                        <option value="XXL">XXL (Tinggi > 180 cm)</option>
+                      </select>
+                    </div>
+                    <div class="field">
+                      <label for="waPassCode">
+                        <img loading="lazy" src="public/icons/ticket.svg" alt="Pass" class="field-label-icon" />
+                        Kode Pass Gratis (Voucher)
+                      </label>
+                      <input
+                        type="text"
+                        id="waPassCode"
+                        placeholder="Klaim voucher di atas"
+                        maxlength="30"
+                        readonly
+                        style="
+                          background: rgba(212, 175, 55, 0.08);
+                          color: var(--gold);
+                          border-color: rgba(212, 175, 55, 0.35);
+                          font-weight: 600;
+                        "
+                      />
+                    </div>
+                  </div>
+                  <div class="field">
+                    <label>
+                      <img loading="lazy" src="public/icons/award.svg" alt="Belt" class="field-label-icon" />
+                      Pilihan Tingkatan Sabuk Awal
+                    </label>
+                    <div class="belt-opts" id="waBeltOpts"></div>
+                  </div>
+                </div>
+                <div class="wa-form-foot">
+                  <span class="eyebrow" id="waHint">Lengkapi semua data</span>
+                  <button
+                    type="button"
+                    class="cta cta-wa cta-wa-premium magnetic-btn"
+                    id="waSendBtn"
+                    disabled
+                  >
+                    <div class="wa-btn-content">
+                      <img loading="lazy"
+                        src="public/icons/whatsapp.svg"
+                        alt="WhatsApp"
+                        style="width: 18px; height: 18px"
+                      />
+                      <span>Kirim Pendaftaran via WhatsApp</span>
+                    </div>
+                    <span class="wa-btn-sub">Respon Cepat · Terkoneksi Langsung ke Sensei</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="cta cta-pdf-premium magnetic-btn"
+                    id="btnDownloadBrochureForm"
+                  >
+                    <img loading="lazy"
+                      src="public/icons/file-pdf.svg"
+                      alt="PDF"
+                      style="width: 16px; height: 16px"
+                    />
+                    <span>Unduh Lembar Brosur &amp; Jadwal (PDF)</span>
+                  </button>
+
+                  <div class="wa-trust-badge">
+                    <img loading="lazy"
+                      src="public/icons/shield-halved.svg"
+                      alt="Shield"
+                      style="width: 13px; height: 13px"
+                    />
+                    <span>Data Calon Siswa Dijamin Kerahasiaannya · Afiliasi Resmi PB IKGA Aceh</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="wa-preview-wrapper">
+              <div class="wa-preview-container">
+                <div class="preview-header">
+                  <div class="preview-header-left">
+                    <img loading="lazy"
+                      src="public/icons/eye.svg"
+                      alt="Eye"
+                      style="width: 13px; height: 13px"
+                    />
+                    <span>PRATINJAU PESAN WHATSAPP</span>
+                  </div>
+                  <span class="preview-header-tag">LIVE SYNC</span>
+                </div>
+
+                <div class="wa-bubble" id="waBubble">
+                  <div class="wa-bubble-title">
+                    <span class="wa-bubble-icon">🥋</span>
+                    <strong>Pendaftaran Gojukai Banda Aceh</strong>
+                  </div>
+                  <div
+                    style="
+                      height: 1px;
+                      background: rgba(0, 0, 0, 0.08);
+                      margin: 8px 0;
+                    "
+                  ></div>
+                  <span id="waPreviewText"
+                    >Isi formulir untuk melihat pesan...</span
+                  >
+                  <div class="wa-meta">
+                    <span id="waTime">10:30</span>
+                    <img loading="lazy"
+                      src="public/icons/check-double.svg"
+                      alt="Check"
+                      class="wa-check"
+                      style="width: 14px; height: 14px"
+                    />
+                  </div>
+                </div>
+
+                <div class="brochure-preview" id="brochurePreview">
+                  <div class="brochure-watermark">剛柔会</div>
+                  <div class="brochure-preview-head">
+                    <div>
+                      <span class="eyebrow" style="color: var(--gold); font-size: 9.5px;">IKGA DOJO ADMISSION PASS</span>
+                      <div style="font-weight: 700; font-size: 13px; letter-spacing: 0.04em;">Lembar Registrasi Dojo</div>
+                    </div>
+                    <span class="brochure-preview-tag">PB IKGA</span>
+                  </div>
+                  <div class="brochure-preview-grid">
+                    <div>
+                      <span>Program</span><strong>Karate-Do Gojukai</strong>
+                    </div>
+                    <div>
+                      <span>Jadwal</span
+                      ><strong
+                        >Sabtu &amp; Minggu<br />15.30 - 17.30 WIB</strong
+                      >
+                    </div>
+                    <div>
+                      <span>Lokasi</span
+                      ><strong>SMK Cut Mutia<br />Peuniti, Banda Aceh</strong>
+                    </div>
+                    <div>
+                      <span>Instruktur</span
+                      ><strong>Pelatih Bersertifikasi IKGA</strong>
+                    </div>
+                    <div>
+                      <span>Nama Calon</span
+                      ><strong id="brochurePreviewName">Belum diisi</strong>
+                    </div>
+                    <div>
+                      <span>Preferensi</span
+                      ><strong id="brochurePreviewPreference"
+                        >Dogi - · Sabuk Putih</strong
+                      >
+                    </div>
+                  </div>
+                  <div class="brochure-preview-foot">
+                    <span class="foot-verified-badge">✓ Verifikasi Dojo Aceh</span>
+                    <span>Admin WhatsApp · 0895410450540</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section map-section" id="location">
+        <div class="wrap">
+          <div>
+            <span class="kanji-mark scramble-text" data-scramble
+              >道場 · Dojo</span
+            >
+            <h2 style="margin-top: 14px">Lokasi Dojo Banda Aceh</h2>
+            <p class="lede" style="margin-top: 16px">
+              Latihan rutin di SMK Cut Mutia, Peuniti, Banda Aceh.
+            </p>
+          </div>
+          <div class="map-wrap map-reveal" style="margin-top: 36px">
+            <iframe
+              src="https://maps.google.com/maps?q=SMK+Cut+Mutia+Peuniti+Banda+Aceh&t=&z=16&ie=UTF8&iwloc=&output=embed"
+              allowfullscreen=""
+              loading="lazy"
+              title="Lokasi Dojo"
+            ></iframe>
+            <div class="map-pin" aria-hidden="true"><span></span></div>
+            <div class="map-info">
+              <div>
+                <div class="k">Alamat</div>
+                <div class="v">SMK Cut Mutia, Peuniti</div>
+              </div>
+              <div>
+                <div class="k">Kota</div>
+                <div class="v">Banda Aceh</div>
+              </div>
+              <div>
+                <div class="k">Jadwal &amp; Kalender</div>
+                <div
+                  class="v"
+                  style="display: flex; align-items: center; gap: 10px"
+                >
+                  <span>Sabtu &amp; Minggu (15.30 WIB)</span>
+                  <button
+                    class="cta magnetic-btn"
+                    id="btnLocationCalendar"
+                    style="
+                      padding: 4px 8px;
+                      font-size: 9px;
+                      border-color: var(--gold);
+                      color: var(--gold);
+                    "
+                  >
+                    <img loading="lazy"
+                      src="public/icons/calendar-plus.svg"
+                      alt="Calendar"
+                      style="
+                        width: 10px;
+                        height: 10px;
+                        display: inline-block;
+                        margin-right: 2px;
+                      "
+                    />
+                    + Cal
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-grid">
+          <!-- Col 1: Brand & IKGA Credentials -->
+          <div class="foot-col foot-brand-col">
+            <div class="brand" style="margin-bottom: 12px">
+              <img loading="lazy"
+                class="brand-logo"
+                src="public/logo-gojukai.webp"
+                alt="Gojukai"
+                style="width: 36px; height: 36px"
+                onerror="this.style.display = 'none'"
+              />
+              <span class="brand-text" style="font-size: 19px">
+                <span class="brand-go">Go</span
+                ><span class="brand-jukai">jukai</span
+                ><span class="brand-aceh">Aceh</span>
+              </span>
+            </div>
+            <p class="foot-desc">
+              Perguruan Karate-Do Gojukai Indonesia Cabang Banda Aceh. Mengajarkan disiplin tradisional, pembentukan karakter, dan teknik bela diri otentik berafiliasi resmi dengan <strong>IKGA (International Karate-Do Gojukai Association)</strong>.
+            </p>
+            <div class="foot-badge-row">
+              <div class="foot-seal-tag">
+                <span class="jp-kanji">剛柔会</span>
+                <span>IKGA CERTIFIED</span>
+              </div>
+              <div class="foot-seal-tag gold">
+                <span>EST. 1950 LINEAGE</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 2: Navigasi Cepat -->
+          <div class="foot-col">
+            <div class="foot-heading">
+              <span class="foot-heading-icon"><img loading="lazy" src="public/icons/hand-fist.svg" alt="" style="width: 12px; height: 12px" /></span>
+              <span>Menu Cepat</span>
+            </div>
+            <div class="foot-nav-links">
+              <a href="#oath"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Sumpah Dojo</a>
+              <a href="#pass"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Free Pass Latihan</a>
+              <a href="#history"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Sejarah &amp; Silsilah</a>
+              <a href="#achievements"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Prestasi &amp; Event</a>
+              <a href="#sensei"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Pelatih &amp; Sensei</a>
+              <a href="#dojo3d"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> 3D Dogi &amp; Sabuk</a>
+              <a href="#faq"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Tanya Jawab (FAQ)</a>
+              <a href="#register"><img loading="lazy" src="public/icons/chevron-right.svg" alt="" class="nav-arrow" /> Pendaftaran Online</a>
+            </div>
+          </div>
+
+          <!-- Col 3: Jadwal & Lokasi Dojo -->
+          <div class="foot-col">
+            <div class="foot-heading">
+              <span class="foot-heading-icon"><img loading="lazy" src="public/icons/location-dot.svg" alt="" style="width: 12px; height: 12px" /></span>
+              <span>Dojo &amp; Jadwal</span>
+            </div>
+            <div class="foot-card">
+              <div class="foot-card-title">Dojo SMK Cut Mutia</div>
+              <p class="foot-card-sub">Jl. Teuku Umar, Peuniti, Kec. Baiturrahman, Kota Banda Aceh, Aceh</p>
+              
+              <div class="foot-schedule-badge">
+                <img loading="lazy" src="public/icons/clock.svg" alt="Clock" style="width: 12px; height: 12px" />
+                <span>Sabtu &amp; Minggu · 15.30 – 17.30 WIB</span>
+              </div>
+              <div class="foot-card-action">
+                <a href="#location" class="foot-action-btn">
+                  <img loading="lazy" src="public/icons/location-arrow.svg" alt="" style="width: 11px; height: 11px" />
+                  Lihat Peta Lokasi
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Col 4: Kontak & Social Resmi -->
+          <div class="foot-col">
+            <div class="foot-heading">
+              <span class="foot-heading-icon"><img loading="lazy" src="public/icons/whatsapp.svg" alt="" style="width: 12px; height: 12px" /></span>
+              <span>Kontak Resmi</span>
+            </div>
+            <p class="foot-subtext">Pertanyaan pendaftaran dan konsultasi langsung dengan Sensei / Pengurus Dojo:</p>
+            
+            <a href="https://wa.me/6281360088296?text=Halo%20Sensei%2C%20saya%20ingin%20bertanya%20mengenai%20latihan%20Karate%20di%20Dojo%20Gojukai%20Banda%20Aceh" target="_blank" rel="noopener noreferrer" class="foot-wa-card">
+              <div class="wa-icon-glow">
+                <img loading="lazy" src="public/icons/whatsapp.svg" alt="WhatsApp" style="width: 18px; height: 18px" />
+              </div>
+              <div class="wa-info">
+                <div class="wa-label">WhatsApp Official</div>
+                <div class="wa-num">+62 813-6008-8296</div>
+              </div>
+              <span class="wa-badge">Online</span>
+            </a>
+
+            <div class="foot-social-wrapper">
+              <div class="foot-social-label">Ikuti Media Sosial Kami:</div>
+              <div class="foot-social">
+                <a href="https://www.instagram.com/gojukaismkcutmeutia?utm_source=ig_web_button_share_sheet&stkn=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Instagram @gojukaismkcutmeutia" title="Instagram @gojukaismkcutmeutia">
+                  <img loading="lazy" src="public/icons/instagram.svg" alt="Instagram" style="width: 16px; height: 16px" />
+                </a>
+                <a href="#" aria-label="YouTube Channel Gojukai Aceh" title="YouTube Channel">
+                  <img loading="lazy" src="public/icons/youtube.svg" alt="YouTube" style="width: 16px; height: 16px" />
+                </a>
+                <a href="#" aria-label="Facebook Page Gojukai Aceh" title="Facebook Page">
+                  <img loading="lazy" src="public/icons/facebook.svg" alt="Facebook" style="width: 16px; height: 16px" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="foot-base">
+          <div class="foot-base-left">
+            <span>&copy; 2026 Gojukai Karate-Do Banda Aceh. All rights reserved.</span>
+            <span class="foot-dot">·</span>
+            <span>IKGA Affiliated Dojo</span>
+          </div>
+          <div class="foot-base-right">
+            <span
+              class="scramble-text foot-kanji"
+              style="font-family: 'Noto Serif JP', serif; letter-spacing: 0.25em;"
+              data-scramble
+              >剛柔会 · 硬と柔の道</span
+            >
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <div
+      id="backToTop"
+      onclick="window.scrollTo({ top: 0, behavior: 'smooth' })"
+    >
+      <img loading="lazy"
+        src="public/icons/arrow-up.svg"
+        alt="Arrow Up"
+        style="width: 18px; height: 18px"
+      />
+    </div>
+
+    <!-- Three.js & Draco Loaders — deferred, only parsed once user activates 3D viewer -->
+    <script src="assets/js/libs/three.min.js" defer></script>
+    <script src="assets/js/libs/draco/draco_decoder.js" defer></script>
+    <script src="assets/js/libs/DRACOLoader.js?v=20260914-perf1" defer></script>
+    <script src="assets/js/libs/GLTFLoader.js" defer></script>
+    <script src="assets/js/libs/OrbitControls.js" defer></script>
+    <script src="assets/js/3d-stage.js?v=20260914-perf1" defer></script>
+
+    <!-- Main JavaScript (Deferred for optimal performance) -->
+    <script src="assets/js/main.js?v=20260914-perf1" defer></script>
+  </body>
+</html>
