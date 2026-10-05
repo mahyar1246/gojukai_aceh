@@ -22,6 +22,20 @@
   --shadow: rgba(0, 0, 0, 0.12);
   --brand-text-shadow:
     0 5px 0 rgba(0, 0, 0, 0.34), 0 11px 10px rgba(0, 0, 0, 0.2);
+  
+  /* Card Animation Variables */
+  --card-hover-translate: -12px;
+  --card-hover-scale: 1.03;
+  --card-hover-duration: 0.35s;
+  --card-hover-easing: cubic-bezier(0.16, 1, 0.3, 1);
+  --card-shadow-gold: 0 25px 50px -15px rgba(0, 0, 0, 0.7), 0 0 35px rgba(212, 175, 55, 0.7), 0 0 70px rgba(212, 175, 55, 0.35), inset 0 0 20px rgba(212, 175, 55, 0.2);
+  --card-shadow-gold-light: 0 25px 50px -15px rgba(0, 0, 0, 0.15), 0 0 35px rgba(184, 150, 15, 0.5), 0 0 70px rgba(184, 150, 15, 0.25), inset 0 0 20px rgba(184, 150, 15, 0.15);
+  --card-border-accent-width: 3px;
+  --card-border-accent-color: var(--gold);
+  --card-border-accent-gradient: linear-gradient(180deg, transparent, var(--gold), transparent);
+  --card-3d-perspective: 1000px;
+  --card-3d-rotate-max: 15deg;
+  --card-3d-translate-max: 8px;
 }
 
 [data-theme="dark"] {
@@ -47,6 +61,10 @@
   --shadow: rgba(0, 0, 0, 0.65);
   --brand-text-shadow:
     0 5px 0 rgba(255, 255, 255, 0.48), 0 11px 10px rgba(255, 255, 255, 0.28);
+  
+  /* Card Animation Variables - Dark Mode Specific */
+  --card-shadow-gold: 0 25px 50px -15px rgba(0, 0, 0, 0.7), 0 0 35px rgba(212, 175, 55, 0.7), 0 0 70px rgba(212, 175, 55, 0.35), inset 0 0 20px rgba(212, 175, 55, 0.2);
+  --card-shadow-gold-light: 0 25px 50px -15px rgba(0, 0, 0, 0.15), 0 0 35px rgba(184, 150, 15, 0.5), 0 0 70px rgba(184, 150, 15, 0.25), inset 0 0 20px rgba(184, 150, 15, 0.15);
 }
 
 * {
@@ -1021,7 +1039,7 @@ p {
 .hero-kicker {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
   margin-bottom: 22px;
 }
 .hero-kicker .bar {
@@ -1417,6 +1435,45 @@ p {
   animation: katanaFallbackReveal 0.6s ease-out 1.2s forwards;
 }
 
+/* ============================================================
+   SLASH REVEAL (TEBASAN KATANA) — oath cards & sejarah
+   ============================================================ */
+
+/* Awal tersembunyi: clip-path diagonal (sweep dari kiri-atas ke kanan-bawah) */
+.katana-slash-reveal {
+  clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  will-change: clip-path, transform, opacity;
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+/* CSS fallback safety net: jika GSAP/ScrollTrigger gagal, reveal setelah 1.4s */
+@keyframes katanaSlashFallback {
+  0%   { clip-path: polygon(0 0, 0 0, 0 100%, 0 100%); opacity: 0; transform: translateY(18px); }
+  100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); opacity: 1; transform: translateY(0); }
+}
+.katana-slash-reveal {
+  animation: katanaSlashFallback 0.7s ease-out 1.4s forwards;
+}
+
+/* Saat revealed (via GSAP .is-revealed atau IO .is-visible) — tutup sweep */
+.katana-slash-reveal.is-revealed,
+.katana-slash-reveal.is-visible {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  opacity: 1;
+  transform: translateY(0);
+  animation: none;
+}
+
+/* Sweep arah kanan-ke-kiri (untuk alternate cards / alternating feel) */
+.katana-slash-reveal.rev-sweep-right {
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+}
+.katana-slash-reveal.rev-sweep-right.is-revealed,
+.katana-slash-reveal.rev-sweep-right.is-visible {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
 /* ========================================================
    HIGH-PERFORMANCE HARDWARE-ACCELERATED SCROLL REVEAL ENGINE
    Runs off main thread via GPU Compositor (60fps/120fps smooth)
@@ -1429,18 +1486,20 @@ p {
 }
 
 .reveal-on-scroll.reveal-scale {
-  transform: scale(0.93) translateY(22px);
+  transform: scale(0.95) translateY(20px);
 }
 
 .reveal-on-scroll.reveal-left {
-  transform: translateX(-32px);
+  transform: translateX(-30px);
 }
 
 .reveal-on-scroll.reveal-right {
-  transform: translateX(32px);
+  transform: translateX(30px);
 }
 
 .reveal-on-scroll.is-revealed,
+.reveal-on-scroll.is-visible,
+.is-revealed,
 .is-visible {
   opacity: 1 !important;
   transform: translate(0, 0) scale(1) !important;
@@ -1459,7 +1518,7 @@ p {
   to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeInScale {
-  from { opacity: 0; transform: scale(0.93) translateY(18px); }
+  from { opacity: 0; transform: scale(0.95) translateY(18px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes fadeInLeft {
@@ -1471,11 +1530,56 @@ p {
   to   { opacity: 1; transform: translateX(0); }
 }
 
+/* FAQ item — elevate + border emas tipis + shadow */
+.faq-item {
+  transition:
+    transform 0.3s cubic-bezier(0.2, 1, 0.3, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.faq-item:hover,
+.faq-item.is-open {
+  transform: translateY(-4px);
+  border-color: rgba(212,175,55,0.55);
+  box-shadow:
+    0 8px 20px rgba(0,0,0,0.18),
+    0 0 14px rgba(212,175,55,0.12);
+}
+
+/* Pastikan faq-answer hover tetap rapi (tdk konflik dengan elevate) */
+@media (hover: hover) {
+  .faq-item:hover .faq-answer {
+    max-height: 300px;
+    padding: 0 24px 20px;
+  }
+  .faq-item:hover .faq-icon {
+    transform: rotate(180deg);
+  }
+}
+
+/* Adjust gap between oath cards for slash reveal */
+.oath-grid {
+  gap: 18px;
+}
+@media (min-width: 1024px) {
+  .oath-grid {
+    gap: 22px;
+  }
+}
+
 /* STATS SECTION UPGRADES */
 .stats-section {
-  background: var(--bg-deep);
-  border-y: 0.5px solid var(--border);
-  padding: 44px 0;
+  /* Barely-there tint — same family as hero but a half-step darker/lighter */
+  background: rgba(0, 0, 0, 0.18);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 44px 0 56px;
+}
+[data-theme="light"] .stats-section {
+  background: rgba(0, 0, 0, 0.04);
+  border-top: 1px solid rgba(0, 0, 0, 0.07);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.07);
 }
 .stats-grid {
   display: grid;
@@ -1484,19 +1588,37 @@ p {
   text-align: center;
 }
 .stat-card {
-  padding: 20px;
-  background: var(--bg);
-  border: 0.5px solid var(--border);
-  border-radius: 6px;
+  padding: 24px 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: 8px;
   position: relative;
-  transition: all 0.3s ease;
-  /* Entrance animation: stagger via nth-child */
-  animation: fadeInScale 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease,
+              box-shadow 0.3s ease,
+              background 0.3s ease;
+  will-change: transform, opacity;
 }
-.stat-card:nth-child(1) { animation-delay: 0.08s; }
-.stat-card:nth-child(2) { animation-delay: 0.18s; }
-.stat-card:nth-child(3) { animation-delay: 0.28s; }
-.stat-card:nth-child(4) { animation-delay: 0.38s; }
+
+.stat-card.is-revealed,
+.stat-card.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.stat-card:nth-child(1) { transition-delay: 0.06s; }
+.stat-card:nth-child(2) { transition-delay: 0.16s; }
+.stat-card:nth-child(3) { transition-delay: 0.26s; }
+.stat-card:nth-child(4) { transition-delay: 0.36s; }
+
 .stat-card::before,
 .stat-card::after {
   content: "";
@@ -1505,6 +1627,7 @@ p {
   height: 10px;
   transition: all 0.3s ease;
   opacity: 0.5;
+  pointer-events: none;
 }
 .stat-card::before {
   top: 10px;
@@ -1522,19 +1645,19 @@ p {
 .stat-card:hover {
   background: radial-gradient(
     circle at center,
-    rgba(211, 47, 47, 0.1),
+    rgba(211, 47, 47, 0.12),
     var(--bg)
   );
   border-color: var(--gold);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
-  transform: translateY(-5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.4), 0 0 22px rgba(212, 175, 55, 0.25);
+  transform: translateY(-6px);
 }
 .stat-card:hover::before,
 .stat-card:hover::after {
-  width: 100%;
-  height: 100%;
-  opacity: 1;
-  border-color: var(--accent);
+  width: calc(100% - 20px);
+  height: calc(100% - 20px);
+  opacity: 0.9;
+  border-color: var(--gold);
 }
 
 .stat-num {
@@ -1555,17 +1678,66 @@ p {
 
 /* SECTION DIVIDER */
 .section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: none;
   width: 100%;
-  margin: clamp(40px, 5vw, 80px) 0;
-  opacity: 0.5;
+  margin: clamp(18px, 2.5vw, 36px) 0;
+}
+.section-divider::before {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.55);
+}
+
+/* Enhanced divider with neon glowing gold accent */
+.section-divider-gold {
+  position: relative;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 0;
+}
+.section-divider-gold::before {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.85) 40%,
+    var(--gold) 50%,
+    rgba(212, 175, 55, 0.85) 60%,
+    transparent
+  );
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.75),
+    0 0 22px rgba(212, 175, 55, 0.45);
+}
+.section-divider-logo {
+  position: relative;
+  z-index: 1;
+  width: 44px;
+  height: 44px;
+  padding: 4px;
+  object-fit: contain;
+  background: var(--bg);
+  border-radius: 50%;
 }
 
 /* OATH SECTION UPGRADES */
 .oath-section {
   background: var(--bg);
   transition: background 0.5s;
+  overflow-x: clip; /* Prevent horizontal scroll during collision animation */
 }
 .oath-header {
   text-align: center;
@@ -1589,10 +1761,12 @@ p {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 16px;
+  overflow: visible; /* cards fly in from outside */
 }
 @media (min-width: 1024px) {
   .oath-grid {
     grid-template-columns: repeat(5, 1fr);
+    overflow: visible;
   }
 }
 .oath-card {
@@ -1603,28 +1777,71 @@ p {
   overflow: hidden;
   border: 1px solid var(--border);
   border-radius: 6px;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  /* Entrance: stagger via nth-child (fired by IntersectionObserver class) */
+  transition:
+    transform var(--card-hover-duration) var(--card-hover-easing),
+    border-color var(--card-hover-duration) ease,
+    box-shadow var(--card-hover-duration) ease,
+    background var(--card-hover-duration) ease;
   opacity: 0;
-  transform: translateY(28px);
+  will-change: transform, opacity;
+  transform-style: preserve-3d;
+  perspective: var(--card-3d-perspective);
 }
+
+/* Interactive line effect for oath cards using div elements */
+.oath-card .oath-line-left,
+.oath-card .oath-line-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--card-border-accent-width);
+  height: 0;
+  background: var(--card-border-accent-gradient);
+  transition: height 0.5s var(--card-hover-easing), opacity 0.5s ease;
+  border-radius: 2px;
+  z-index: 5;
+  opacity: 0;
+}
+
+.oath-card .oath-line-left {
+  left: 0;
+}
+
+.oath-card .oath-line-right {
+  right: 0;
+}
+
+.oath-card:hover .oath-line-left,
+.oath-card:hover .oath-line-right {
+  height: 60%;
+  opacity: 1;
+}
+/* CSS fallback: ketika GSAP unavailable / gagal, IntersectionObserver menambah is-visible
+   dengan demikian animasi masuk pakai keyframe fadeInUp (center-outward via data-order) */
 .oath-card.is-visible {
   animation: fadeInUp 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+  animation-delay: calc(var(--center-distance, 0) * 0.10s);
 }
-.oath-card.is-visible:nth-child(1) { animation-delay: 0.05s; }
-.oath-card.is-visible:nth-child(2) { animation-delay: 0.12s; }
-.oath-card.is-visible:nth-child(3) { animation-delay: 0.19s; }
-.oath-card.is-visible:nth-child(4) { animation-delay: 0.26s; }
-.oath-card.is-visible:nth-child(5) { animation-delay: 0.33s; }
+.oath-card.is-visible:nth-child(1) { --center-distance: 2; }
+.oath-card.is-visible:nth-child(2) { --center-distance: 1; }
+.oath-card.is-visible:nth-child(3) { --center-distance: 0; }
+.oath-card.is-visible:nth-child(4) { --center-distance: 1; }
+.oath-card.is-visible:nth-child(5) { --center-distance: 2; }
 .oath-card:hover {
   border-color: var(--gold);
   background: var(--card-hover);
-  transform: scale(1.08) translateY(-15px);
-  z-index: 10;
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+  transform: translateY(var(--card-hover-translate)) translateZ(25px) scale(var(--card-hover-scale));
+  z-index: 25;
+  box-shadow: var(--card-shadow-gold);
+  transition:
+    transform var(--card-hover-duration) var(--card-hover-easing),
+    border-color var(--card-hover-duration) ease,
+    box-shadow var(--card-hover-duration) var(--card-hover-easing),
+    background var(--card-hover-duration) ease;
 }
-.oath-card:hover::after {
-  display: none;
+
+[data-theme="light"] .oath-card:hover {
+  box-shadow: var(--card-shadow-gold-light);
 }
 
 .oath-num {
@@ -1699,47 +1916,77 @@ p {
 /* LUXURY TICKET UPGRADES */
 .pass-section {
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-deep) 100%);
+  padding-top: clamp(64px, 8vw, 110px);
+  padding-bottom: clamp(64px, 8vw, 110px);
 }
 .ticket-wrapper {
   max-width: 860px;
   margin: 32px auto 0;
+  perspective: 1200px;
 }
 .ticket-card {
-  background: linear-gradient(135deg, #222 0%, #333 50%, #222 100%);
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(212, 175, 55, 0.14), transparent 42%),
+    linear-gradient(135deg, #171719 0%, #29292d 54%, #171719 100%);
   position: relative;
-  border: 1px solid var(--gold);
-  border-radius: 12px;
+  border: 1px solid rgba(212, 175, 55, 0.68);
+  border-radius: 18px;
   display: grid;
   grid-template-columns: 2fr 1fr;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 16px 40px var(--shadow);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.32),
+    inset 0 1px rgba(255, 255, 255, 0.08);
+  transform-style: preserve-3d;
+  perspective: var(--card-3d-perspective);
+  transition:
+    transform var(--card-hover-duration) var(--card-hover-easing),
+    box-shadow var(--card-hover-duration) var(--card-hover-easing);
 }
 [data-theme="light"] .ticket-card {
-  background: linear-gradient(135deg, #ffffff 0%, #f4f4f4 50%, #ffffff 100%);
-  border: 1px solid #ddd;
+  background:
+    radial-gradient(ellipse at 18% 0%, rgba(184, 150, 15, 0.12), transparent 42%),
+    linear-gradient(135deg, #fff 0%, #f6f3e9 54%, #fff 100%);
+  border: 1px solid rgba(184, 150, 15, 0.55);
   color: #333;
 }
 [data-theme="light"] .ticket-card::before {
   color: rgba(0, 0, 0, 0.03);
 }
 
+/* Remove old pseudo-elements */
 .ticket-card::before {
-  content: "IKGA BANDA ACEH";
+  display: none;
+}
+
+.ticket-card::after {
+  display: none;
+}
+
+/* Watermark using div element */
+.ticket-card .ticket-watermark {
   position: absolute;
   font-family: "Barlow Condensed", sans-serif;
-  font-size: 80px;
+  font-size: clamp(25px, 4vw, 48px);
   font-weight: 700;
-  color: rgba(212, 175, 55, 0.03);
+  letter-spacing: 0.12em;
+  color: rgba(212, 175, 55, 0.12);
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%) rotate(-30deg);
+  transform: translate(-50%, -50%) rotate(-12deg);
   white-space: nowrap;
   z-index: 0;
   pointer-events: none;
+  user-select: none;
+  text-shadow: 0 1px rgba(255, 255, 255, 0.04);
 }
-.ticket-card::after {
-  content: "";
+[data-theme="light"] .ticket-card .ticket-watermark {
+  color: rgba(150, 116, 0, 0.13);
+}
+
+/* Shimmer effect using div element */
+.ticket-card .ticket-shimmer {
   position: absolute;
   top: 0;
   left: 0;
@@ -1756,6 +2003,35 @@ p {
   pointer-events: none;
   z-index: 1;
 }
+
+/* Interactive line elements using span elements */
+.ticket-card .ticket-line-left,
+.ticket-card .ticket-line-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--card-border-accent-width);
+  height: 0;
+  background: var(--card-border-accent-gradient);
+  transition: height 0.5s var(--card-hover-easing), opacity 0.5s ease;
+  border-radius: 2px;
+  z-index: 10;
+  opacity: 0;
+}
+
+.ticket-card .ticket-line-left {
+  left: 0;
+}
+
+.ticket-card .ticket-line-right {
+  right: 0;
+}
+
+.ticket-card:hover .ticket-line-left,
+.ticket-card:hover .ticket-line-right {
+  height: 70%;
+  opacity: 1;
+}
 @keyframes foilShine {
   0% {
     background-position: 200% 0;
@@ -1766,10 +2042,64 @@ p {
 }
 
 .ticket-left {
-  padding: 36px;
-  border-right: 1px dashed var(--border-strong);
+  padding: clamp(26px, 4vw, 44px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   position: relative;
-  z-index: 2;
+  z-index: 1;
+}
+.ticket-left .eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  line-height: 1.6;
+  letter-spacing: 0.14em;
+}
+.ticket-left h3 {
+  max-width: 100%;
+  line-height: 1.12;
+  letter-spacing: 0.015em;
+}
+.ticket-left p {
+  max-width: 30rem;
+  line-height: 1.65;
+}
+.ticket-photo {
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border-left: 1px solid rgba(212, 175, 55, 0.5);
+  background: var(--bg-deep);
+}
+.ticket-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(15, 15, 17, 0.02) 48%, rgba(15, 15, 17, 0.38)),
+    linear-gradient(90deg, rgba(20, 20, 23, 0.26), transparent 35%);
+  pointer-events: none;
+}
+.ticket-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.ticket-disclaimer {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  color: var(--fg-muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
 }
 .ticket-right {
   padding: 36px;
@@ -1803,19 +2133,158 @@ p {
 }
 .ticket-code {
   font-family: "IBM Plex Mono", monospace;
-  font-size: 18px;
-  letter-spacing: 0.25em;
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: 0.12em;
   color: var(--gold);
-  padding: 8px 16px;
-  border: 1px stroke var(--gold);
-  background: rgba(0, 0, 0, 0.4);
-  border-radius: 4px;
-  margin: 12px 0;
+  padding: 10px 18px;
+  border: 1px solid rgba(212, 175, 55, 0.42);
+  background: rgba(0, 0, 0, 0.34);
+  border-radius: 8px;
+  margin: 16px 0 12px;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  text-align: center;
+  line-height: 1.4;
 }
 .ticket-card:hover {
-  box-shadow:
-    0 22px 55px var(--shadow),
-    0 0 28px var(--gold-dim);
+  box-shadow: var(--card-shadow-gold);
+}
+
+[data-theme="light"] .ticket-card:hover {
+  box-shadow: var(--card-shadow-gold-light);
+}
+.ticket-card {
+  display: block;
+  min-height: 320px;
+}
+.ticket-card-inner {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  transform-style: preserve-3d;
+  transition: transform 0.75s cubic-bezier(0.2, 0.75, 0.25, 1);
+}
+.ticket-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: 17px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.ticket-face-front {
+  display: grid;
+  grid-template-columns: minmax(0, 1.75fr) minmax(220px, 0.9fr);
+  background:
+    radial-gradient(ellipse at 16% 0%, rgba(212, 175, 55, 0.12), transparent 44%),
+    linear-gradient(135deg, #1b1b1e 0%, #29292d 56%, #1b1b1e 100%);
+  pointer-events: auto;
+}
+.ticket-face-front .ticket-left {
+  min-width: 0;
+}
+.ticket-face-front .ticket-left h3 {
+  overflow-wrap: anywhere;
+}
+[data-theme="light"] .ticket-face-front {
+  background:
+    radial-gradient(ellipse at 16% 0%, rgba(184, 150, 15, 0.1), transparent 44%),
+    linear-gradient(135deg, #fff 0%, #f7f5ee 56%, #fff 100%);
+}
+.ticket-face-back {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: clamp(24px, 4vw, 40px);
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(212, 175, 55, 0.16), transparent 60%),
+    linear-gradient(145deg, #242427 0%, #131315 100%);
+  transform: rotateY(180deg);
+  pointer-events: none;
+}
+.ticket-face-back > :not(.ticket-watermark) {
+  position: relative;
+  z-index: 1;
+}
+.ticket-face-back h3 {
+  margin: 0;
+  line-height: 1.15;
+}
+[data-theme="light"] .ticket-face-back {
+  background:
+    radial-gradient(circle at center, rgba(212, 175, 55, 0.16), transparent 65%),
+    linear-gradient(135deg, #fff 0%, #f1f1f1 100%);
+}
+.ticket-face-back p {
+  max-width: 440px;
+  margin: 0;
+  color: var(--fg-dim);
+  font-size: 14px;
+  line-height: 1.65;
+}
+.ticket-back-icon {
+  width: 46px;
+  height: 46px;
+  padding: 11px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 50%;
+  background: rgba(212, 175, 55, 0.08);
+}
+.ticket-face-back .cta {
+  width: min(100%, 240px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.ticket-claim-icon {
+  display: block;
+  flex: 0 0 14px;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+}
+.ticket-card.is-flipped .ticket-card-inner {
+  transform: rotateY(180deg);
+}
+.ticket-card.is-flipped .ticket-face-front {
+  pointer-events: none;
+}
+.ticket-card.is-flipped .ticket-face-back {
+  pointer-events: auto;
+}
+@media (hover: hover) and (pointer: fine) {
+  .ticket-card:not(.is-flipped):hover {
+    box-shadow: var(--card-shadow-gold);
+  }
+}
+.ticket-flip-toggle {
+  display: block;
+  margin: 12px auto 0;
+  padding: 10px 16px;
+  border: 1px solid var(--gold-dim);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--gold);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+  border-radius: 999px;
+}
+.ticket-flip-toggle:hover,
+.ticket-flip-toggle:focus-visible {
+  background: var(--gold);
+  color: var(--bg);
+}
+.ticket-flip-toggle:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px var(--gold-dim);
 }
 #claimPassBtn {
   animation: softPulse 2.4s ease-in-out infinite;
@@ -1836,6 +2305,9 @@ p {
 
 .voucher-active-badge {
   display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
   background: linear-gradient(90deg, var(--gold), #ffd700, var(--gold));
   background-size: 200% auto;
   color: #000;
@@ -1849,6 +2321,13 @@ p {
   box-shadow: 0 0 10px var(--gold-dim);
   animation: goldPulse 2s linear infinite;
 }
+.voucher-active-badge img {
+  display: block;
+  flex: 0 0 12px;
+  width: 12px;
+  height: 12px;
+  margin: 0;
+}
 @keyframes goldPulse {
   to {
     background-position: 200% center;
@@ -1857,7 +2336,10 @@ p {
 
 .quiz-section {
   background: var(--bg-deep);
-  border-y: 0.5px solid var(--border);
+  border-top: 0.5px solid var(--border);
+  border-bottom: 0.5px solid var(--border);
+  padding-top: clamp(64px, 8vw, 110px);
+  padding-bottom: clamp(64px, 8vw, 110px);
 }
 .quiz-card {
   max-width: 780px;
@@ -1942,10 +2424,33 @@ p {
 
 .history-section {
   background: var(--bg-deep);
+  padding-top: clamp(32px, 4vw, 56px);
 }
 .history-timeline {
   position: relative;
   padding-left: 36px;
+}
+.history-timeline-svg {
+  position: absolute;
+  left: 13px;
+  top: 10px;
+  bottom: 10px;
+  width: 3px;
+  height: calc(100% - 20px);
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
+}
+.history-timeline-svg line.timeline-line-track {
+  stroke: var(--border-strong);
+  stroke-width: 2;
+  opacity: 0.4;
+}
+.history-timeline-svg line.timeline-line-progress {
+  stroke: var(--gold);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 6px var(--gold));
 }
 .history-timeline::before {
   content: "";
@@ -1973,13 +2478,17 @@ p {
   padding-bottom: 36px;
   opacity: 1;
   transform: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* Only hide for GSAP animation on non-mobile (desktop with GSAP)
-   The JS adds .gsap-anim-history class to the timeline on desktop */
-.gsap-anim-history .history-item {
+.history-item.reveal-on-scroll {
   opacity: 0;
   transform: translateY(18px);
+}
+.history-item.is-revealed,
+.history-item.is-visible {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
 }
 .history-item:last-child {
   padding-bottom: 0;
@@ -2149,28 +2658,126 @@ p {
 }
 
 .sensei-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
   margin-top: 36px;
+  width: 100%;
+  justify-items: center;
 }
+
+@media (min-width: 640px) {
+  .sensei-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+  .sensei-grid > .sensei-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    max-width: 360px;
+    justify-self: center;
+  }
+}
+
+@media (min-width: 1024px) {
+  .sensei-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+    gap: 28px;
+  }
+  .sensei-grid > .sensei-card {
+    flex: 0 0 calc(33.333% - 28px);
+    max-width: calc(33.333% - 20px);
+  }
+}
+
 .sensei-card {
-  flex: 0 1 calc(33.333% - 20px);
-  max-width: 380px;
-  min-width: 270px;
+  width: 100%;
+  max-width: 360px;
   background: var(--bg-raise);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 22px;
   text-align: center;
   position: relative;
+  cursor: pointer;
+  user-select: none;
+  overflow: hidden;
+  transition: transform var(--card-hover-duration) var(--card-hover-easing),
+              box-shadow var(--card-hover-duration) var(--card-hover-easing),
+              border-color var(--card-hover-duration) var(--card-hover-easing),
+              background var(--card-hover-duration) ease;
+  transform: translateZ(0); /* transform-gpu */
+  will-change: transform, box-shadow, border-color;
+  transform-style: preserve-3d;
+  perspective: var(--card-3d-perspective);
 }
-.sensei-card:nth-last-child(1):nth-child(2) {
-  margin-right: auto;
+
+/* Interactive line effect for sensei cards */
+.sensei-card .sensei-line-left,
+.sensei-card .sensei-line-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: var(--card-border-accent-width);
+  height: 0;
+  background: var(--card-border-accent-gradient);
+  transition: height 0.5s var(--card-hover-easing), opacity 0.5s ease;
+  border-radius: 2px;
+  z-index: 5;
+  opacity: 0;
 }
-.sensei-card:last-child {
-  margin-left: auto;
+
+.sensei-card .sensei-line-left {
+  left: 0;
+}
+
+.sensei-card .sensei-line-right {
+  right: 0;
+}
+
+.sensei-card:hover .sensei-line-left,
+.sensei-card:hover .sensei-line-right {
+  height: 70%;
+  opacity: 1;
+}
+
+.sensei-card:hover {
+  transform: translateY(var(--card-hover-translate)) translateZ(20px) scale(var(--card-hover-scale));
+  border-color: var(--gold);
+  box-shadow: var(--card-shadow-gold);
+  z-index: 30;
+}
+
+[data-theme="light"] .sensei-card:hover {
+  box-shadow: var(--card-shadow-gold-light);
+}
+
+/* Click animation / interactive feedback */
+.sensei-card:active {
+  transform: scale(0.97) translateZ(0);
+  transition-duration: 100ms;
+}
+
+/* Pulse effect for sensei cards */
+.sensei-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.4) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.5);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.sensei-card.sensei-pulse::after {
+  opacity: 1;
+  transform: scale(1.4);
 }
 
 .sensei-avatar-wrapper {
@@ -2769,6 +3376,15 @@ p {
   position: relative;
 }
 
+.wa-intro {
+  text-align: center;
+}
+.wa-intro .lede {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 640px;
+}
+
 .wa-luxury-badge {
   display: inline-flex;
   align-items: center;
@@ -2834,10 +3450,131 @@ p {
   align-items: start;
 }
 
+.register-prompt {
+  position: fixed;
+  z-index: 1200;
+  right: auto;
+  bottom: 24px;
+  left: max(20px, calc((100vw - 1440px) / 2));
+  width: min(280px, calc(100vw - 32px));
+  padding: 18px;
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(212, 175, 55, 0.16), transparent 58%),
+    rgba(20, 20, 23, 0.96);
+  box-shadow: 0 18px 52px rgba(0, 0, 0, 0.32);
+  color: #f5f5f7;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translate(-18px, 0);
+  transition:
+    opacity 0.28s ease,
+    transform 0.28s ease,
+    visibility 0.28s;
+  backdrop-filter: blur(16px);
+}
+.register-prompt.is-visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translate(0, 0);
+}
+.register-prompt-copy p {
+  margin: 7px 0 16px;
+  color: rgba(245, 245, 247, 0.78);
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+}
+.register-prompt-kicker {
+  display: block;
+  color: #e1c56b;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-align: center;
+}
+.register-prompt-cta {
+  display: flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 14px;
+  border: 1px solid rgba(212, 175, 55, 0.64);
+  border-radius: 8px;
+  background: linear-gradient(135deg, #d4af37, #f3dc8a);
+  color: #171719;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.register-prompt-cta:hover,
+.register-prompt-cta:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(212, 175, 55, 0.24);
+}
+.register-prompt-cta img {
+  width: 15px;
+  height: 15px;
+  filter: brightness(0);
+}
+[data-theme="light"] .register-prompt {
+  border-color: rgba(184, 150, 15, 0.38);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(184, 150, 15, 0.13), transparent 58%),
+    rgba(255, 255, 255, 0.97);
+  color: #171719;
+}
+[data-theme="light"] .register-prompt-copy p {
+  color: #555;
+}
+[data-theme="light"] .register-prompt-kicker {
+  color: #9a7800;
+}
+
 @media (max-width: 992px) {
   .wa-layout {
     grid-template-columns: 1fr;
     gap: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .register-prompt {
+    top: auto;
+    right: 10px;
+    bottom: 84px;
+    left: auto;
+    width: min(220px, calc(100vw - 20px));
+    padding: 11px 12px;
+    border-radius: 12px;
+    transform: translateY(12px);
+  }
+  .register-prompt-copy p {
+    margin: 4px 0 9px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+  .register-prompt-kicker {
+    font-size: 8px;
+    letter-spacing: 0.08em;
+  }
+  .register-prompt-cta {
+    min-height: 36px;
+    padding: 0 11px;
+    font-size: 11px;
+  }
+  .register-prompt-cta img {
+    width: 13px;
+    height: 13px;
+  }
+  .register-prompt.is-visible {
+    transform: translateY(0);
   }
 }
 
@@ -3089,8 +3826,24 @@ p {
 
 .belt-opts {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
+}
+
+.belt-opts .belt-opt:last-child {
+  grid-column: 2;
+}
+
+@media (max-width: 480px) {
+  .belt-opts {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .belt-opts .belt-opt:last-child {
+    grid-column: 1 / -1;
+    max-width: 140px;
+    margin: 0 auto;
+    width: 100%;
+  }
 }
 
 .belt-opt {
@@ -4010,10 +4763,16 @@ p {
   }
   .ticket-card {
     grid-template-columns: 1fr;
+    min-height: 360px;
+  }
+  .ticket-face-front {
+    grid-template-columns: minmax(0, 1.75fr) minmax(220px, 0.9fr);
+    grid-template-rows: 1fr;
   }
   .ticket-left {
     border-right: none;
-    border-bottom: 1px dashed var(--border-strong);
+    border-bottom: none;
+    padding: 28px 24px;
   }
   .ticket-notch-top,
   .ticket-notch-bottom {
@@ -4025,6 +4784,36 @@ p {
   .wa-preview-container {
     position: static;
     margin-top: 30px;
+  }
+}
+
+@media (max-width: 640px) {
+  .ticket-card {
+    min-height: 560px;
+  }
+  .ticket-face-front {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: 200px minmax(0, 1fr);
+  }
+  .ticket-face-front .ticket-left {
+    grid-row: 2;
+    padding: 24px 18px;
+  }
+  .ticket-photo {
+    grid-row: 1;
+    border-left: none;
+    border-top: 1px solid rgba(212, 175, 55, 0.5);
+  }
+  .ticket-photo img {
+    object-position: center top;
+  }
+  .ticket-card .ticket-watermark {
+    font-size: clamp(21px, 6vw, 32px);
+    letter-spacing: 0.035em;
+    transform: translate(-50%, -50%) rotate(-10deg);
+  }
+  .ticket-flip-toggle {
+    max-width: 100%;
   }
 }
 
@@ -4086,9 +4875,57 @@ p {
     width: 100%;
   }
   .foot-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .foot-grid > .foot-col {
+    display: flex;
+    width: 100%;
     flex-direction: column;
     align-items: center;
+    text-align: center;
+  }
+  .foot-grid .foot-heading {
     justify-content: center;
+  }
+  .foot-grid .foot-brand-col,
+  .foot-grid .foot-brand-col .brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .foot-grid .foot-desc,
+  .foot-grid .foot-subtext,
+  .foot-grid .foot-card-sub {
+    text-align: center;
+  }
+  .foot-grid .foot-badge-row,
+  .foot-grid .foot-nav-links,
+  .foot-grid .foot-schedule-badge,
+  .foot-grid .foot-card-action,
+  .foot-grid .foot-social {
+    justify-content: center;
+  }
+  .foot-grid .foot-nav-links {
+    align-items: center;
+  }
+  .foot-grid .foot-nav-links a {
+    justify-content: center;
+  }
+  .foot-grid .foot-card {
+    width: min(100%, 360px);
+    text-align: center;
+  }
+  .foot-grid .foot-wa-card {
+    width: min(100%, 360px);
+    text-align: center;
+  }
+  .foot-grid .wa-info {
+    text-align: center;
+  }
+  .foot-social-wrapper,
+  .foot-social-label {
     text-align: center;
   }
   .foot-about {
@@ -4107,6 +4944,7 @@ p {
   }
   .foot-base {
     justify-content: center;
+    align-items: center;
     text-align: center;
     flex-direction: column;
     gap: 8px;
@@ -4138,12 +4976,8 @@ p {
     margin-right: auto;
   }
   .sensei-card {
-    flex: 1 1 100%;
-    max-width: 100%;
-  }
-  .sensei-card:nth-last-child(1):nth-child(2),
-  .sensei-card:last-child {
-    margin: 0;
+    max-width: 360px;
+    width: 100%;
   }
 
   /* ── HISTORY TIMELINE MOBILE FIX ──────────────────────────────────────────
@@ -4169,6 +5003,9 @@ p {
   }
   .history-timeline {
     padding-left: 28px;
+  }
+  .history-dot {
+    left: -20px;
   }
 }
 
@@ -5067,6 +5904,3 @@ p {
     padding: 6px 12px;
   }
 }
-
-
-

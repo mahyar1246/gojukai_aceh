@@ -169,9 +169,7 @@ const ACHIEVEMENT_DATA = [
     athleteName: "Amel",
     fullAward: "Medali Emas Kumite -61 Kg Putri",
     image: "public/achievements/prestasi_amel.webp",
-    eventPhotos: [
-      "public/achievements/prestasi_amel.webp",
-    ],
+    eventPhotos: ["public/achievements/prestasi_amel.webp"],
   },
   {
     id: 2,
@@ -360,7 +358,9 @@ function safeOpenUrl(url) {
 
   // Validate allowed protocols and safe external destinations
   var isAllowedTarget =
-    /^https:\/\/(api\.whatsapp\.com|wa\.me|calendar\.google\.com|www\.instagram\.com|instagram\.com|maps\.google\.com|www\.google\.com)\//i.test(cleanUrl) ||
+    /^https:\/\/(api\.whatsapp\.com|wa\.me|calendar\.google\.com|www\.instagram\.com|instagram\.com|maps\.google\.com|www\.google\.com)\//i.test(
+      cleanUrl,
+    ) ||
     /^(mailto:|tel:)/i.test(cleanUrl) ||
     cleanUrl.startsWith("https://") ||
     cleanUrl.startsWith("#");
@@ -603,27 +603,208 @@ function initScrambleEffects() {
   });
 }
 
-// TILT CARD EFFECT
+// TILT CARD EFFECT - Enhanced with 3D cursor-responsive tilt
 function initTiltCards() {
   if (isMobilePerformanceMode) return;
+  
+  // Apply enhanced 3D tilt to all tilt cards
   document.querySelectorAll(".tilt-card").forEach(function (card) {
     card.addEventListener("mousemove", function (e) {
       var rect = card.getBoundingClientRect();
       var x = e.clientX - rect.left - rect.width / 2;
       var y = e.clientY - rect.top - rect.height / 2;
-      var rotX = (-y / (rect.height / 2)) * 8;
-      var rotY = (x / (rect.width / 2)) * 8;
+      
+      // Calculate rotation based on cursor position
+      var rotX = (-y / (rect.height / 2)) * 12; // Increased rotation for more dramatic effect
+      var rotY = (x / (rect.width / 2)) * 12;
+      
+      // Add 3D perspective and scale
       card.style.transform =
         "perspective(1000px) rotateX(" +
         rotX +
         "deg) rotateY(" +
         rotY +
-        "deg) scale3d(1.02,1.02,1.02)";
+        "deg) scale3d(1.05,1.05,1.05) translateZ(20px)";
+        
+      // Add dynamic shadow based on tilt
+      var shadowX = -x * 0.3;
+      var shadowY = -y * 0.3;
+      card.style.boxShadow = 
+        shadowX + "px " + shadowY + "px 30px rgba(0,0,0,0.4), " +
+        "0 0 20px rgba(212, 175, 55, 0.3)";
     });
+    
     card.addEventListener("mouseleave", function () {
       card.style.transform =
-        "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)";
+        "perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1) translateZ(0)";
+      card.style.boxShadow = "";
     });
+  });
+}
+
+// ENHANCED 3D CURSOR-RESPONSIVE TILT FOR OATH AND SENSEI CARDS
+function initEnhanced3DTilt() {
+  if (isMobilePerformanceMode) return;
+
+  // Apply to oath cards and sensei cards (ticket card has specialized treatment)
+  const targetCards = document.querySelectorAll('.oath-card, .sensei-card');
+
+  targetCards.forEach(function(card) {
+    card.style.transformStyle = 'preserve-3d';
+    card.style.perspective = '1000px';
+
+    let animationFrameId = null;
+
+    card.addEventListener('mousemove', function(e) {
+      // Cancel any pending animation frame to prevent stacking
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+
+      animationFrameId = requestAnimationFrame(function() {
+        const rect = card.getBoundingClientRect();
+        const centerX = rect.left + rect.width / 2;
+        const centerY = rect.top + rect.height / 2;
+
+        // Calculate cursor position relative to center
+        const mouseX = e.clientX - centerX;
+        const mouseY = e.clientY - centerY;
+
+        // Calculate rotation based on cursor position (more dramatic effect)
+        const rotateX = (-mouseY / (rect.height / 2)) * 15; // Up to 15 degrees
+        const rotateY = (mouseX / (rect.width / 2)) * 15;  // Up to 15 degrees
+
+        // Calculate translate based on cursor position (corner effect)
+        const translateX = (mouseX / (rect.width / 2)) * 8;
+        const translateY = (mouseY / (rect.height / 2)) * 8;
+
+        // Apply 3D transformation with cursor-responsive tilt
+        card.style.transform = `
+          perspective(1000px)
+          rotateX(${rotateX}deg)
+          rotateY(${rotateY}deg)
+          translateX(${translateX}px)
+          translateY(${translateY}px)
+          scale(1.04)
+          translateZ(30px)
+        `;
+
+        // Dynamic shadow that follows cursor
+        const shadowX = -mouseX * 0.4;
+        const shadowY = -mouseY * 0.4;
+        const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+
+        if (isDarkMode) {
+          card.style.boxShadow = `
+            ${shadowX}px ${shadowY}px 40px rgba(0, 0, 0, 0.6),
+            0 0 0 2px rgba(212, 175, 55, 0.3),
+            0 0 60px rgba(212, 175, 55, 0.25),
+            inset 0 0 25px rgba(212, 175, 55, 0.15)
+          `;
+        } else {
+          card.style.boxShadow = `
+            ${shadowX}px ${shadowY}px 40px rgba(0, 0, 0, 0.15),
+            0 0 0 2px rgba(184, 150, 15, 0.3),
+            0 0 60px rgba(184, 150, 15, 0.15),
+            inset 0 0 25px rgba(184, 150, 15, 0.1)
+          `;
+        }
+      });
+    });
+
+    card.addEventListener('mouseleave', function() {
+      // Cancel any pending animation frame
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = null;
+      }
+
+      // Reset to base hover state
+      card.style.transform = 'translateY(-12px) scale(1.03)';
+      card.style.boxShadow = '';
+
+      // Remove inline styles to revert to CSS hover state
+      setTimeout(() => {
+        card.style.transform = '';
+        card.style.boxShadow = '';
+      }, 300);
+    });
+  });
+}
+
+// SPECIALIZED 3D TILT FOR PASS CARD WITH ENHANCED PARALLAX
+function initPassCard3DTilt() {
+  if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+  const passCard = document.getElementById('ticketCard');
+  if (!passCard) return;
+
+  passCard.style.transformStyle = 'preserve-3d';
+  passCard.style.perspective = '1200px';
+
+  let animationFrameId = null;
+
+  passCard.addEventListener('mousemove', function(e) {
+    // Cancel any pending animation frame to prevent stacking
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+    }
+
+    animationFrameId = requestAnimationFrame(function() {
+      const rect = passCard.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+
+      // Calculate cursor position relative to center (normalized -1 to 1)
+      const normalizedX = (e.clientX - centerX) / (rect.width / 2);
+      const normalizedY = (e.clientY - centerY) / (rect.height / 2);
+
+      const rotateX = -normalizedY * 8;
+      const rotateY = normalizedX * 10;
+
+      const translateX = normalizedX * 4;
+      const translateY = normalizedY * 4;
+
+      passCard.style.transition = "transform 120ms ease-out, box-shadow 180ms ease";
+      passCard.style.transform = `
+        perspective(1200px)
+        rotateX(${rotateX}deg)
+        rotateY(${rotateY}deg)
+        translateX(${translateX}px)
+        translateY(${translateY}px)
+        scale(1.015)
+      `;
+
+      const shadowX = -normalizedX * 10;
+      const shadowY = -normalizedY * 10;
+      const isDarkMode = document.documentElement.getAttribute('data-theme') === 'dark';
+
+      if (isDarkMode) {
+        passCard.style.boxShadow = `
+          ${shadowX}px ${shadowY}px 32px rgba(0, 0, 0, 0.55),
+          0 0 0 2px rgba(212, 175, 55, 0.3),
+          0 0 40px rgba(212, 175, 55, 0.2)
+        `;
+      } else {
+        passCard.style.boxShadow = `
+          ${shadowX}px ${shadowY}px 32px rgba(0, 0, 0, 0.18),
+          0 0 0 2px rgba(184, 150, 15, 0.3),
+          0 0 40px rgba(184, 150, 15, 0.16)
+        `;
+      }
+    });
+  });
+
+  passCard.addEventListener('mouseleave', function() {
+    // Cancel any pending animation frame
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = null;
+    }
+
+    passCard.style.transition = "";
+    passCard.style.transform = "";
+    passCard.style.boxShadow = "";
   });
 }
 
@@ -634,17 +815,22 @@ function updateClassCountdown() {
   var day = now.getDay();
   var scheduleDays = [6, 0];
   var scheduleLabels = { 6: "SABTU", 0: "MINGGU" };
+  var classTimes = {
+    6: { startH: 15, startM: 0, endH: 17, endM: 0 },
+    0: { startH: 8, startM: 0, endH: 10, endM: 0 }
+  };
   var selectedDay = null;
   var candidates = [];
 
   for (var i = 0; i < 2; i++) {
     var candidateDay = scheduleDays[i];
+    var timeInfo = classTimes[candidateDay];
     var daysAhead = (candidateDay - day + 7) % 7;
     var candidate = new Date(now);
     candidate.setDate(now.getDate() + daysAhead);
-    candidate.setHours(15, 30, 0, 0);
+    candidate.setHours(timeInfo.startH, timeInfo.startM, 0, 0);
     var classEnd = new Date(candidate);
-    classEnd.setHours(17, 30, 0, 0);
+    classEnd.setHours(timeInfo.endH, timeInfo.endM, 0, 0);
 
     if (classEnd > now)
       candidates.push({
@@ -684,7 +870,7 @@ function updateClassCountdown() {
 function buildGoogleCalendarUrl() {
   var title = encodeURIComponent("Latihan Rutin Karate-Do Gojukai Banda Aceh");
   var details = encodeURIComponent(
-    "Jadwal latihan rutin Gojukai Karate-Do Banda Aceh.\nLokasi: SMK Cut Mutia Peuniti.\nWaktu: 15.30 - 17.30 WIB.",
+    "Jadwal latihan rutin Gojukai Karate-Do Banda Aceh.\nLokasi: SMK Cut Mutia Peuniti.\nWaktu: Sabtu 15.00-17.00 WIB & Minggu 08.00-10.00 WIB.",
   );
   var location = encodeURIComponent("SMK Cut Mutia Peuniti, Banda Aceh");
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&details=${details}&location=${location}&recur=RRULE:FREQ=WEEKLY;BYDAY=SA,SU`;
@@ -692,7 +878,7 @@ function buildGoogleCalendarUrl() {
 
 function downloadIcsFile() {
   var csContent =
-    "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Gojukai Banda Aceh//Training Schedule//ID\nBEGIN:VEVENT\nSUMMARY:Latihan Rutin Karate Gojukai Banda Aceh\nDESCRIPTION:Latihan Rutin Gojukai Karate-Do di SMK Cut Mutia Peuniti, Banda Aceh.\nLOCATION:SMK Cut Mutia Peuniti, Banda Aceh\nRRULE:FREQ=WEEKLY;BYDAY=SA,SU\nDTSTART:20260103T153000Z\nDTEND:20260103T173000Z\nEND:VEVENT\nEND:VCALENDAR";
+    "BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Gojukai Banda Aceh//Training Schedule//ID\nBEGIN:VEVENT\nSUMMARY:Latihan Rutin Karate Gojukai Banda Aceh\nDESCRIPTION:Latihan Rutin Gojukai Karate-Do di SMK Cut Mutia Peuniti, Banda Aceh (Sabtu 15.00-17.00 & Minggu 08.00-10.00 WIB).\nLOCATION:SMK Cut Mutia Peuniti, Banda Aceh\nRRULE:FREQ=WEEKLY;BYDAY=SA,SU\nDTSTART:20260103T150000Z\nDTEND:20260103T170000Z\nEND:VEVENT\nEND:VCALENDAR";
   var blob = new Blob([csContent], { type: "text/calendar;charset=utf-8;" });
   var link = document.createElement("a");
   link.href = window.URL.createObjectURL(blob);
@@ -719,7 +905,7 @@ function initPassClaim() {
       var banner = document.getElementById("voucherAlertBanner");
       if (banner) banner.classList.remove("hidden");
       var activeBadge = document.getElementById("activeBadge");
-      if (activeBadge) activeBadge.style.display = "block";
+      if (activeBadge) activeBadge.style.display = "inline-flex";
       var opts = document.querySelectorAll(".belt-opt");
       if (opts.length > 0) {
         opts.forEach((o) => o.classList.remove("is-on"));
@@ -741,6 +927,35 @@ function initPassClaim() {
       }, 600);
     });
   }
+}
+
+function initTicketFlip() {
+  var ticketCard = document.getElementById("ticketCard");
+  var flipToggle = document.getElementById("ticketFlipToggle");
+  var backFace = ticketCard
+    ? ticketCard.querySelector(".ticket-face-back")
+    : null;
+  var frontFace = ticketCard
+    ? ticketCard.querySelector(".ticket-face-front")
+    : null;
+  var claimBtn = document.getElementById("claimPassBtn");
+  if (!ticketCard || !flipToggle || !frontFace || !backFace || !claimBtn) return;
+
+  function syncFlipAccessibility(isFlipped) {
+    frontFace.setAttribute("aria-hidden", String(isFlipped));
+    frontFace.removeAttribute("aria-pressed");
+    backFace.setAttribute("aria-hidden", String(!isFlipped));
+    claimBtn.tabIndex = isFlipped ? 0 : -1;
+    flipToggle.setAttribute("aria-pressed", String(isFlipped));
+  }
+
+  syncFlipAccessibility(false);
+
+  flipToggle.addEventListener("click", function () {
+    var isFlipped = ticketCard.classList.toggle("is-flipped");
+    syncFlipAccessibility(isFlipped);
+  });
+
 }
 
 // QUIZ SYSTEM
@@ -994,7 +1209,8 @@ function displayAchievement(index) {
       achievementImage.src = achievement.image;
       achievementImage.classList.add("active");
     }
-    if (achievementCategory) achievementCategory.textContent = achievement.category;
+    if (achievementCategory)
+      achievementCategory.textContent = achievement.category;
     if (achievementYear) achievementYear.textContent = achievement.year;
     if (achievementAward) achievementAward.textContent = achievement.awardLevel;
     if (achievementEvent) achievementEvent.textContent = achievement.eventName;
@@ -1011,11 +1227,23 @@ function displayAchievement(index) {
       var fullAwardLower = (achievement.fullAward || "").toLowerCase();
       var awardLevelLower = (achievement.awardLevel || "").toLowerCase();
 
-      if (fullAwardLower.indexOf("emas") !== -1 || awardLevelLower.indexOf("emas") !== -1 || awardLevelLower === "juara 1") {
+      if (
+        fullAwardLower.indexOf("emas") !== -1 ||
+        awardLevelLower.indexOf("emas") !== -1 ||
+        awardLevelLower === "juara 1"
+      ) {
         metaAward.classList.add("medal-gold");
-      } else if (fullAwardLower.indexOf("perak") !== -1 || awardLevelLower.indexOf("perak") !== -1 || awardLevelLower === "juara 2") {
+      } else if (
+        fullAwardLower.indexOf("perak") !== -1 ||
+        awardLevelLower.indexOf("perak") !== -1 ||
+        awardLevelLower === "juara 2"
+      ) {
         metaAward.classList.add("medal-silver");
-      } else if (fullAwardLower.indexOf("perunggu") !== -1 || awardLevelLower.indexOf("perunggu") !== -1 || awardLevelLower === "juara 3") {
+      } else if (
+        fullAwardLower.indexOf("perunggu") !== -1 ||
+        awardLevelLower.indexOf("perunggu") !== -1 ||
+        awardLevelLower === "juara 3"
+      ) {
         metaAward.classList.add("medal-bronze");
       } else {
         metaAward.classList.add("accent-red");
@@ -1024,8 +1252,17 @@ function displayAchievement(index) {
     if (metaEvent) metaEvent.textContent = achievement.eventName;
 
     // Update Continuous Running Text Marquee
-    var marqueeLine = "🏆 " + achievement.athleteName.toUpperCase() + " — " + achievement.fullAward.toUpperCase() + " — " + achievement.eventName.toUpperCase() + " 🥇";
-    var marqueeElements = document.querySelectorAll("#marqueeTrack .marquee-item, #marqueeTrack span");
+    var marqueeLine =
+      "🏆 " +
+      achievement.athleteName.toUpperCase() +
+      " — " +
+      achievement.fullAward.toUpperCase() +
+      " — " +
+      achievement.eventName.toUpperCase() +
+      " 🥇";
+    var marqueeElements = document.querySelectorAll(
+      "#marqueeTrack .marquee-item, #marqueeTrack span",
+    );
     if (marqueeElements && marqueeElements.length > 0) {
       marqueeElements.forEach(function (el) {
         el.textContent = marqueeLine;
@@ -1046,7 +1283,8 @@ function startAchievementRotation() {
 
   achievementRotationInterval = setInterval(function () {
     if (!isAchievementPaused) {
-      currentAchievementIndex = (currentAchievementIndex + 1) % ACHIEVEMENT_DATA.length;
+      currentAchievementIndex =
+        (currentAchievementIndex + 1) % ACHIEVEMENT_DATA.length;
       displayAchievement(currentAchievementIndex);
     }
   }, 4500); // 4s display + 0.5s fade
@@ -1072,13 +1310,13 @@ function startAchievementProgress() {
     if (!isAchievementPaused) {
       var elapsed = Date.now() - startTime - pausedTime;
       progress = (elapsed / duration) * 100;
-      
+
       if (progress >= 100) {
         progress = 0;
         startTime = Date.now();
         pausedTime = 0;
       }
-      
+
       achievementProgress.style.width = progress + "%";
     } else {
       // Track paused time
@@ -1139,7 +1377,8 @@ function populateEventDropdown() {
   // All events option
   var allOpt = document.createElement("option");
   allOpt.value = "all";
-  allOpt.textContent = "🏆 Semua Event & Kejuaraan (" + ACHIEVEMENT_DATA.length + " Prestasi)";
+  allOpt.textContent =
+    "🏆 Semua Event & Kejuaraan (" + ACHIEVEMENT_DATA.length + " Prestasi)";
   modalEventSelect.appendChild(allOpt);
 
   // Individual event options
@@ -1159,7 +1398,10 @@ function openAchievementModal(selectedEventOrAchievement) {
   var targetEvent = "all";
   if (typeof selectedEventOrAchievement === "string") {
     targetEvent = selectedEventOrAchievement;
-  } else if (selectedEventOrAchievement && selectedEventOrAchievement.eventName) {
+  } else if (
+    selectedEventOrAchievement &&
+    selectedEventOrAchievement.eventName
+  ) {
     targetEvent = selectedEventOrAchievement.eventName;
   }
 
@@ -1197,16 +1439,20 @@ function renderModalGallery(selectedEvent) {
   var filteredList = [];
   if (!selectedEvent || selectedEvent === "all") {
     filteredList = ACHIEVEMENT_DATA;
-    if (modalEventTitle) modalEventTitle.textContent = "Semua Prestasi & Kejuaraan";
-    if (modalCategory) modalCategory.textContent = filteredList.length + " Atlet Berprestasi";
+    if (modalEventTitle)
+      modalEventTitle.textContent = "Semua Prestasi & Kejuaraan";
+    if (modalCategory)
+      modalCategory.textContent = filteredList.length + " Atlet Berprestasi";
     if (modalYear) modalYear.textContent = "2025";
   } else {
     filteredList = ACHIEVEMENT_DATA.filter(function (item) {
       return item.eventName === selectedEvent;
     });
     if (modalEventTitle) modalEventTitle.textContent = selectedEvent;
-    if (modalCategory) modalCategory.textContent = filteredList.length + " Atlet Juara";
-    if (modalYear) modalYear.textContent = filteredList[0] ? filteredList[0].year : "2025";
+    if (modalCategory)
+      modalCategory.textContent = filteredList.length + " Atlet Juara";
+    if (modalYear)
+      modalYear.textContent = filteredList[0] ? filteredList[0].year : "2025";
   }
 
   // Clear and populate gallery
@@ -1236,7 +1482,8 @@ function renderModalGallery(selectedEvent) {
     img.loading = "lazy";
     img.decoding = "async";
     img.onerror = function () {
-      this.src = "https://placehold.co/400x300/131315/D4AF37?text=Prestasi+Gojukai";
+      this.src =
+        "https://placehold.co/400x300/131315/D4AF37?text=Prestasi+Gojukai";
     };
 
     // Base Card Overlay Badge (Default bottom view)
@@ -1252,7 +1499,7 @@ function renderModalGallery(selectedEvent) {
     var awardText = (item.fullAward || "").toLowerCase();
     var isGold = awardText.indexOf("emas") !== -1;
     var isSilver = awardText.indexOf("perak") !== -1;
-    var medalIcon = isGold ? "🥇" : (isSilver ? "🥈" : "🥉");
+    var medalIcon = isGold ? "🥇" : isSilver ? "🥈" : "🥉";
 
     if (isGold) {
       awardSpan.classList.add("medal-gold");
@@ -1309,8 +1556,16 @@ function renderModalGallery(selectedEvent) {
 
     var hintRow = document.createElement("div");
     hintRow.className = "hover-detail-hint";
-    hintRow.innerHTML =
-      '<img src="public/icons/eye.svg" alt="Preview" style="width:12px;height:12px;display:inline-block;filter:brightness(1.5)"> <span>Klik untuk perbesar foto</span>';
+    // Use DOM API instead of innerHTML for safety
+    var hintImg = document.createElement("img");
+    hintImg.src = "public/icons/eye.svg";
+    hintImg.alt = "Preview";
+    hintImg.style.cssText = "width:12px;height:12px;display:inline-block;filter:brightness(1.5)";
+    var hintSpan = document.createElement("span");
+    hintSpan.textContent = "Klik untuk perbesar foto";
+    hintRow.appendChild(hintImg);
+    hintRow.appendChild(document.createTextNode(" "));
+    hintRow.appendChild(hintSpan);
 
     hoverDetails.appendChild(nameRow);
     hoverDetails.appendChild(awardRow);
@@ -1325,12 +1580,7 @@ function renderModalGallery(selectedEvent) {
     function triggerItemLightbox() {
       openAchievementLightbox(
         item.image,
-        item.athleteName +
-          " — " +
-          item.fullAward +
-          " (" +
-          item.eventName +
-          ")",
+        item.athleteName + " — " + item.fullAward + " (" + item.eventName + ")",
       );
     }
 
@@ -1365,7 +1615,8 @@ function openAchievementLightbox(imageUrl, captionText) {
   img.src = imageUrl;
   img.alt = captionText || "Achievement Photo";
   img.onerror = function () {
-    this.src = "https://placehold.co/800x600/131315/D4AF37?text=Prestasi+Gojukai";
+    this.src =
+      "https://placehold.co/800x600/131315/D4AF37?text=Prestasi+Gojukai";
   };
 
   lightboxInner.appendChild(img);
@@ -1496,19 +1747,43 @@ function initWaForm() {
       var selBelt = document.querySelector(".belt-opt.is-on .label");
 
       var name = (nameEl ? nameEl.value : "").trim().slice(0, 60);
-      var age = parseInt((ageEl ? ageEl.value : "0"), 10) || 0;
+      var age = parseInt(ageEl ? ageEl.value : "0", 10) || 0;
       var alamat = (alamatEl ? alamatEl.value : "").trim().slice(0, 120);
-      var dogi = (dogiEl ? dogiEl.value : "").slice(0, 10);
+      // dogi value must come from the select element's allowed options only
+      var ALLOWED_DOGI = ["S", "M", "L", "XL", "XXL"];
+      var dogiRaw = (dogiEl ? dogiEl.value : "").slice(0, 10);
+      var dogi = ALLOWED_DOGI.includes(dogiRaw) ? dogiRaw : "";
       var passCode = (passCodeEl ? passCodeEl.value : "").trim().slice(0, 30);
+      // Sanitize passCode: only allow alphanumeric and hyphens
+      passCode = passCode.replace(/[^A-Za-z0-9\-]/g, "");
       var belt = selBelt ? selBelt.textContent.trim().slice(0, 30) : "Putih";
+      // Sanitize belt: only allow safe text characters
+      belt = belt.replace(/[<>"'`]/g, "");
+
+      // Validate name: reject HTML/script injection attempts
+      if (/<|>|script|javascript|on\w+=/i.test(name)) {
+        alert("Nama mengandung karakter yang tidak diperbolehkan.");
+        return;
+      }
+      // Validate alamat: reject HTML/script injection attempts
+      if (/<|>|script|javascript|on\w+=/i.test(alamat)) {
+        alert("Alamat mengandung karakter yang tidak diperbolehkan.");
+        return;
+      }
 
       if (!name || age <= 0 || !alamat || !dogi) {
         alert("Mohon lengkapi seluruh data pendaftaran sebelum mengirim.");
         return;
       }
 
+      // Additional bounds check on age
+      if (age < 5 || age > 99) {
+        alert("Usia tidak valid. Mohon masukkan usia antara 5 dan 99 tahun.");
+        return;
+      }
+
       var msg = `Halo Dojo Gojukai Banda Aceh, saya ingin mendaftar:\n• Nama: ${name}\n• Usia: ${age} thn\n• Alamat: ${alamat}\n• Ukuran Dogi: ${dogi}\n• Sabuk: ${belt}${passCode ? `\n• Voucher Pass: ${passCode}` : ""}`;
-      
+
       safeOpenUrl(
         `https://api.whatsapp.com/send?phone=62895410450540&text=${encodeURIComponent(msg)}`,
       );
@@ -1529,10 +1804,14 @@ function generatePdfBrochure(e) {
 
   var name = (nameEl && nameEl.value.trim().slice(0, 60)) || "Calon Karateka";
   var age = (ageEl && ageEl.value.trim().slice(0, 10)) || "Belum diisi";
-  var alamat = (alamatEl && alamatEl.value.trim().slice(0, 120)) || "Banda Aceh";
-  var belt = selBelt ? selBelt.textContent.trim().slice(0, 30) : "Belum Ditentukan";
+  var alamat =
+    (alamatEl && alamatEl.value.trim().slice(0, 120)) || "Banda Aceh";
+  var belt = selBelt
+    ? selBelt.textContent.trim().slice(0, 30)
+    : "Belum Ditentukan";
   var dogi = (dogiEl && dogiEl.value.slice(0, 10)) || "-";
-  var passCode = (passCodeEl && passCodeEl.value.trim().slice(0, 30)) || "Belum ada pass";
+  var passCode =
+    (passCodeEl && passCodeEl.value.trim().slice(0, 30)) || "Belum ada pass";
   var logoUrl = new URL("public/logo-gojukai.webp", window.location.href).href;
 
   var printWindow = window.open("", "_blank");
@@ -1769,7 +2048,7 @@ function generatePdfBrochure(e) {
     <div class="info-grid-2">
       <div class="box">
         <h4>Jadwal Latihan Rutin</h4>
-        <p>• <b>Sabtu</b>: 15.30 – 17.30 WIB<br>• <b>Minggu</b>: 15.30 – 17.30 WIB</p>
+        <p>• <b>Sabtu</b>: 15.00 – 17.00 WIB<br>• <b>Minggu</b>: 08.00 – 10.00 WIB</p>
       </div>
       <div class="box">
         <h4>Lokasi Dojo Latihan</h4>
@@ -1820,15 +2099,22 @@ function buildOathGrid() {
   if (!oathGrid) return;
 
   OATH_DATA.forEach((o, i) => {
+    var num = i + 1; // Hitotsu 1..5
+    // Center Outward distance: tengah=0, dalam=1, tepi=2
+    var centerDist = num === 3 ? 0 : num < 3 ? 3 - num : num - 3;
     var card = document.createElement("div");
     card.className = "oath-card tilt-card";
+    card.dataset.order = num;
+    card.dataset.centerDistance = centerDist;
     card.innerHTML = `
-      <div class="oath-num">Hitotsu ${i + 1}</div>
-      <div class="oath-kanji scramble-text" data-scramble>${o.kanji}</div>
-      <div class="oath-romaji">${o.romaji}</div>
-      <div class="oath-meaning">${o.meaning}</div>
+      <div class="oath-line-left"></div>
+      <div class="oath-line-right"></div>
+      <div class="oath-num">Hitotsu ${escapeHtml(String(num))}</div>
+      <div class="oath-kanji scramble-text" data-scramble>${escapeHtml(o.kanji)}</div>
+      <div class="oath-romaji">${escapeHtml(o.romaji)}</div>
+      <div class="oath-meaning">${escapeHtml(o.meaning)}</div>
       <div class="oath-expand">
-        <div class="oath-keywords">${o.keywords.map((k) => `<span class="oath-kw">${k}</span>`).join("")}</div>
+        <div class="oath-keywords">${o.keywords.map((k) => `<span class="oath-kw">${escapeHtml(k)}</span>`).join("")}</div>
       </div>
     `;
     card.addEventListener("click", () => card.classList.toggle("is-open"));
@@ -1840,24 +2126,53 @@ function buildHistoryTimeline() {
   var timeline = document.getElementById("historyTimeline");
   if (!timeline) return;
 
+  // Insert SVG timeline progress tracker for stroke-dashoffset animation
+  if (!timeline.querySelector(".history-timeline-svg")) {
+    var svgNS = "http://www.w3.org/2000/svg";
+    var svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "history-timeline-svg");
+    svg.setAttribute("aria-hidden", "true");
+    svg.setAttribute("width", "4");
+    svg.setAttribute("height", "100%");
+
+    var trackLine = document.createElementNS(svgNS, "line");
+    trackLine.setAttribute("class", "timeline-line-track");
+    trackLine.setAttribute("x1", "2");
+    trackLine.setAttribute("y1", "0");
+    trackLine.setAttribute("x2", "2");
+    trackLine.setAttribute("y2", "100%");
+
+    var progLine = document.createElementNS(svgNS, "line");
+    progLine.setAttribute("class", "timeline-line-progress");
+    progLine.setAttribute("id", "timelineLineProgress");
+    progLine.setAttribute("x1", "2");
+    progLine.setAttribute("y1", "0");
+    progLine.setAttribute("x2", "2");
+    progLine.setAttribute("y2", "100%");
+
+    svg.appendChild(trackLine);
+    svg.appendChild(progLine);
+    timeline.insertBefore(svg, timeline.firstChild);
+  }
+
   // On non-mobile, mark the timeline so GSAP can animate items in.
-  // The CSS hides items inside .gsap-anim-history; GSAP reveals them on scroll.
-  // On mobile (performance mode), the class is NOT added, so items are visible.
   if (!isMobilePerformanceMode) {
     timeline.classList.add("gsap-anim-history");
   }
 
-  HISTORY_DATA.forEach((h) => {
-    var item = document.createElement("div");
-    item.className = "history-item";
-    item.innerHTML = `
-      <div class="history-dot"></div>
-      <div class="history-year">${h.year}</div>
-      <div class="history-title">${h.title}</div>
-      <div class="history-desc">${h.desc}</div>
-    `;
-    timeline.appendChild(item);
-  });
+  if (timeline.querySelectorAll(".history-item").length === 0) {
+    HISTORY_DATA.forEach((h) => {
+      var item = document.createElement("div");
+      item.className = "history-item";
+      item.innerHTML = `
+        <div class="history-dot"></div>
+        <div class="history-year">${escapeHtml(h.year)}</div>
+        <div class="history-title">${escapeHtml(h.title)}</div>
+        <div class="history-desc">${escapeHtml(h.desc)}</div>
+      `;
+      timeline.appendChild(item);
+    });
+  }
 }
 
 function initMarqueeGallery() {
@@ -1884,10 +2199,12 @@ function buildBeltSelector() {
     var btn = document.createElement("button");
     btn.className = "belt-card-btn" + (i === 0 ? " is-active" : "");
     btn.type = "button";
+    // Validate belt color is a safe CSS value (hex or named color only)
+    var safeBeltColor = /^#[0-9a-fA-F]{3,8}$|^[a-zA-Z]+$/.test(b.color) ? b.color : "#ccc";
     btn.innerHTML = `
-      <div class="belt-card-swatch" style="background:${b.color}"></div>
-      <div class="belt-card-title">${b.name}</div>
-      <div class="belt-card-jp scramble-text" data-scramble>${b.jp}</div>
+      <div class="belt-card-swatch" style="background:${safeBeltColor}"></div>
+      <div class="belt-card-title">${escapeHtml(b.name)}</div>
+      <div class="belt-card-jp scramble-text" data-scramble>${escapeHtml(b.jp)}</div>
     `;
     btn.addEventListener("click", () => selectBelt(i));
     beltGridCards.appendChild(btn);
@@ -1910,8 +2227,8 @@ function buildBeltSelector() {
             .map(
               (s) => `
               <div class="syllabus-item">
-                <span class="syllabus-item-tech">${s.tech}</span>
-                <span class="syllabus-item-type">${s.type}</span>
+                <span class="syllabus-item-tech">${escapeHtml(s.tech)}</span>
+                <span class="syllabus-item-type">${escapeHtml(s.type)}</span>
               </div>
             `,
             )
@@ -1940,7 +2257,9 @@ function buildWaBeltOpts() {
     var opt = document.createElement("button");
     opt.className = "belt-opt" + (i === 0 ? " is-on" : "");
     opt.type = "button";
-    opt.innerHTML = `<div class="swatch" style="background:${b.color}"></div><div class="label">${b.name.replace("Sabuk ", "")}</div>`;
+    // Validate belt color is a safe CSS value (hex or named color only)
+    var safeBeltColorOpt = /^#[0-9a-fA-F]{3,8}$|^[a-zA-Z]+$/.test(b.color) ? b.color : "#ccc";
+    opt.innerHTML = `<div class="swatch" style="background:${safeBeltColorOpt}"></div><div class="label">${escapeHtml(b.name.replace("Sabuk ", ""))}</div>`;
     opt.addEventListener("click", function () {
       document
         .querySelectorAll(".belt-opt")
@@ -1957,7 +2276,8 @@ function animateCounter(el) {
   if (!el || el.dataset.counted === "true") return;
   el.dataset.counted = "true";
   var target = parseInt(el.getAttribute("data-target"), 10) || 0;
-  var suffix = target === 150 ? "+" : target === 5 ? "+" : target === 100 ? "%" : "";
+  var suffix =
+    target === 150 ? "+" : target === 5 ? "+" : target === 100 ? "%" : "";
   var startTime = null;
   var duration = 1400;
 
@@ -1982,20 +2302,27 @@ function initStatsCounter() {
       animateCounter(el);
       return;
     }
-    var obs = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCounter(entry.target);
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1 });
+    var obs = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 },
+    );
     obs.observe(el);
   });
 }
 
 function initKatanaReveals() {
-  if (typeof gsap === "undefined" || typeof ScrollTrigger === "undefined" || isMobilePerformanceMode) {
+  if (
+    typeof gsap === "undefined" ||
+    typeof ScrollTrigger === "undefined" ||
+    isMobilePerformanceMode
+  ) {
     document.querySelectorAll(".katana-reveal").forEach(function (el) {
       el.classList.add("reveal-on-scroll", "is-revealed");
     });
@@ -2048,7 +2375,7 @@ function initScrollRevealEngine() {
     ".wa-preview-wrapper",
     ".map-wrap",
     ".foot-brand",
-    ".foot-col"
+    ".foot-col",
   ];
 
   var allTargets = document.querySelectorAll(revealSelectors.join(", "));
@@ -2078,8 +2405,8 @@ function initScrollRevealEngine() {
     },
     {
       rootMargin: "0px 0px -35px 0px",
-      threshold: 0.05
-    }
+      threshold: 0.05,
+    },
   );
 
   allTargets.forEach(function (el) {
@@ -2088,11 +2415,20 @@ function initScrollRevealEngine() {
     }
 
     // Add directional / subtle scale variants based on element type
-    if (el.classList.contains("stat-card") || el.classList.contains("oath-card") || el.classList.contains("sensei-card") || el.classList.contains("quiz-card") || el.classList.contains("map-wrap")) {
-      el.classList.add("reveal-scale");
-    } else if (el.classList.contains("history-item") || el.classList.contains("faq-item")) {
-      el.classList.add("reveal-left");
-    }
+      if (
+          el.classList.contains("stat-card") ||
+          el.classList.contains("oath-card") ||
+          el.classList.contains("sensei-card") ||
+          el.classList.contains("quiz-card") ||
+          el.classList.contains("map-wrap") ||
+          el.classList.contains("history-item")
+        ) {
+          el.classList.add("reveal-scale");
+        } else if (
+          el.classList.contains("faq-item")
+        ) {
+          el.classList.add("reveal-left");
+        }
 
     // Stagger delay for grid siblings
     if (el.parentElement) {
@@ -2115,7 +2451,11 @@ function initScrollRevealEngine() {
   });
 
   // Timeline progress line scrub (Desktop GSAP enhancement)
-  if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined" && !isMobilePerformanceMode) {
+  if (
+    typeof gsap !== "undefined" &&
+    typeof ScrollTrigger !== "undefined" &&
+    !isMobilePerformanceMode
+  ) {
     var timeline = document.querySelector(".history-timeline");
     if (timeline) {
       gsap.to(timeline, {
@@ -2132,42 +2472,313 @@ function initScrollRevealEngine() {
   }
 }
 
-function triggerAnimations() {
-  if (typeof gsap === "undefined") return;
-  gsap.fromTo(
-    ".hero-title .char-span",
-    { opacity: 0, y: 30, scale: 0.8 },
-    {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      duration: 0.45,
-      stagger: 0.04,
-      ease: "back.out(1.7)",
-    },
-  );
-  gsap.fromTo(
-    ".hero-title .sub",
-    { opacity: 0, y: 20 },
-    { opacity: 1, y: 0, duration: 0.8, delay: 0.7, ease: "power2.out" },
-  );
+// SENSEI INTERACTIVE CLICK ANIMATIONS
+function initSenseiInteractions() {
+  document.querySelectorAll(".sensei-card").forEach(function (card) {
+    card.addEventListener("click", function () {
+      this.classList.remove("sensei-pulse");
+      void this.offsetWidth; // trigger reflow
+      this.classList.add("sensei-pulse");
+      if (typeof playSound === "function") playSound("click");
+      if (typeof gsap !== "undefined") {
+        gsap.fromTo(
+          this,
+          { scale: 0.96 },
+          { scale: 1.03, duration: 0.45, ease: "back.out(2)", overwrite: "auto" }
+        );
+      }
+    });
+  });
+}
+
+// GSAP ANIMATION CONTEXT & SCROLL ENGINE
+let appGSAPContext = null;
+
+function initGSAPAnimations() {
+  if (typeof gsap === "undefined") return function () {};
+
   if (typeof ScrollTrigger !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
-    gsap.fromTo(
-      ".oath-title-anim .word-span",
-      { opacity: 0, y: 35, filter: "blur(5px)" },
-      {
-        opacity: 1,
-        y: 0,
-        filter: "blur(0px)",
-        duration: 0.55,
-        stagger: 0.1,
-        ease: "power3.out",
-        scrollTrigger: { trigger: "#oath", start: "top 75%" },
-      },
-    );
   }
+
+  // Clean up any existing context before re-initializing
+  if (appGSAPContext) {
+    appGSAPContext.revert();
+    appGSAPContext = null;
+  }
+
+  var prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)",
+  ).matches;
+  var isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+  // Reduced motion: cancel animations and show static elements
+  if (prefersReducedMotion) {
+    document
+      .querySelectorAll(
+        ".stat-card, .sensei-card, .achievement-showcase, .katana-reveal, .reveal-on-scroll",
+      )
+      .forEach(function (el) {
+        el.style.opacity = "1";
+        el.style.transform = "none";
+        el.classList.add("is-revealed", "is-visible");
+      });
+    document.querySelectorAll(".stat-num").forEach(function (el) {
+      var target = el.getAttribute("data-target") || "0";
+      var suffix = el.getAttribute("data-suffix") || "";
+      el.textContent = target + suffix;
+    });
+    return function cleanup() {};
+  }
+
+  // Wrap everything inside gsap.context() for clean scoped memory management
+  appGSAPContext = gsap.context(function () {
+    if (typeof ScrollTrigger !== "undefined") {
+      // 1. Reveal on scroll: ScrollTrigger.batch() for stats, sensei, achievement cards
+      var batchCards = gsap.utils.toArray(
+        ".stat-card, .sensei-card, .achievement-showcase",
+      );
+      if (batchCards.length > 0) {
+        ScrollTrigger.batch(batchCards, {
+          interval: 0.1,
+          batchMax: 6,
+          onEnter: function (batch) {
+            gsap.fromTo(
+              batch,
+              { opacity: 0, y: 40 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.75,
+                stagger: 0.12,
+                ease: "power2.out",
+                overwrite: "auto",
+              },
+            );
+          },
+          once: true,
+        });
+      }
+
+      // 2. Animated statistics counter with GSAP onUpdate (149+, 4+, 1948, 99%)
+      document.querySelectorAll(".stat-num").forEach(function (el) {
+        var targetVal = parseInt(el.getAttribute("data-target"), 10) || 0;
+        var suffix = el.getAttribute("data-suffix") || "";
+        var counterObj = { val: 0 };
+
+        gsap.to(counterObj, {
+          val: targetVal,
+          duration: 1.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: ".stats-section",
+            start: "top 85%",
+            once: true,
+          },
+          onUpdate: function () {
+            el.textContent = Math.round(counterObj.val) + suffix;
+          },
+          onComplete: function () {
+            el.textContent = targetVal + suffix;
+          },
+        });
+      });
+
+      // 3. Subtle Parallax ONLY on hero background (yPercent: 18, scrub: true) - disabled on mobile
+      if (!isMobile) {
+        var heroBg = document.getElementById("heroSlideshow");
+        if (heroBg) {
+          gsap.to(heroBg, {
+            yPercent: 18,
+            ease: "none",
+            scrollTrigger: {
+              trigger: "#hero",
+              start: "top top",
+              end: "bottom top",
+              scrub: true,
+            },
+          });
+        }
+      }
+
+      // 4. Section Sejarah timeline line "tergambar" (stroke-dashoffset)
+      var timelineEl = document.getElementById("historyTimeline");
+      var progressLine = document.getElementById("timelineLineProgress");
+      if (timelineEl && progressLine) {
+        if (!isMobile) {
+          var lineLength = timelineEl.offsetHeight || 500;
+          progressLine.style.strokeDasharray = lineLength;
+          progressLine.style.strokeDashoffset = lineLength;
+
+          gsap.to(progressLine, {
+            strokeDashoffset: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: timelineEl,
+              start: "top 75%",
+              end: "bottom 75%",
+              scrub: true,
+              onRefresh: function () {
+                var newLen = timelineEl.offsetHeight || 500;
+                progressLine.style.strokeDasharray = newLen;
+              },
+            },
+          });
+        } else {
+          progressLine.style.strokeDasharray = "none";
+          progressLine.style.strokeDashoffset = "0";
+        }
+      }
+
+      // 5. Hero title & sub animations (transform and opacity ONLY, GPU-friendly)
+      gsap.fromTo(
+        ".hero-title .char-span",
+        { opacity: 0, y: 30, scale: 0.8 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.45,
+          stagger: 0.04,
+          ease: "back.out(1.7)",
+        },
+      );
+      gsap.fromTo(
+        ".hero-title .sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, delay: 0.6, ease: "power2.out" },
+      );
+
+      // Oath title animation (transform and opacity ONLY)
+      gsap.fromTo(
+        ".oath-title-anim .word-span",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.55,
+          stagger: 0.08,
+          ease: "power3.out",
+          scrollTrigger: { trigger: "#oath", start: "top 75%", once: true },
+        },
+      );
+
+      // Oath cards — Slash Reveal (Tebasan Katana) via GSAP + ScrollTrigger
+      // Prinsip: clip-path diagonal sweep dari kiri-atas ke kanan-bawah,
+      // memunculkan setiap kartu seolah katana menebas dari tengah ke tepi.
+      // Desktop: GSAP-driven sweep per kartu (center-first, lalu inner, lalu outer).
+      if (!isMobile) {
+        var oathCards = gsap.utils.toArray("#oathGrid .oath-card");
+        if (oathCards.length >= 5) {
+          // Kelompok berdasarkan urutan Center Outward
+          var center = oathCards[2];     // Hitotsu 3 — tengah (awal)
+          var innerA = oathCards[1];     // Hitotsu 2
+          var innerB = oathCards[3];     // Hitotsu 4
+          var outerA = oathCards[0];     // Hitotsu 1
+          var outerB = oathCards[4];     // Hitotsu 5
+
+          // Set initial slash-hidden (clip-path tertutup) + opacity
+          gsap.set([center, innerA, innerB, outerA, outerB], {
+            clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+            opacity: 0,
+            y: 18,
+          });
+
+          // Timeline Slash Reveal dengan ScrollTrigger scrub
+          var oathTl = gsap.timeline({
+            scrollTrigger: {
+              trigger: "#oath",
+              start: "top 65%",
+              end: "bottom 80%",
+              scrub: 1.0,
+            },
+          });
+
+          // 1) Center (Hitotsu 3) — tebasan pertama (sweeping dari kiri ke kanan)
+          oathTl.to(center, {
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+            opacity: 1,
+            y: 0,
+            duration: 0.55,
+            ease: "power3.out",
+          }, 0);
+
+          // 2) Inner pair (Hitotsu 2 & 4) — bersamaan, sedikit setelah center
+          oathTl
+            .to(innerA, {
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+            }, 0.12)
+            .to(innerB, {
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+            }, 0.12);
+
+          // 3) Outer pair (Hitotsu 1 & 5) — terakhir, bersamaan
+          oathTl
+            .to(outerA, {
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+            }, 0.26)
+            .to(outerB, {
+              clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power3.out",
+            }, 0.26);
+        }
+      } else {
+        // Mobile: Slash Reveal sederhana (fade-up + clip-path sweep, tanpa scrub)
+        // Menggunakan stagger berdasarkan data-center-distance
+        gsap.fromTo(
+          "#oathGrid .oath-card",
+          {
+            clipPath: "polygon(0 0, 0 0, 0 100%, 0 100%)",
+            opacity: 0,
+            y: 22,
+          },
+          {
+            clipPath: "polygon(0 0, 100% 0, 100% 100%, 0 100%)",
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: "power3.out",
+            stagger: (i, target) => {
+              var dist = parseInt(target.dataset.centerDistance, 10) || 0;
+              // center:0 → 0; dalam:1 → 0.10; tepi:2 → 0.22
+              return dist === 0 ? 0 : dist === 1 ? 0.10 : 0.22;
+            },
+            scrollTrigger: { trigger: "#oathGrid", start: "top 88%", once: true },
+          },
+        );
+      }
+    }
+  });
+
+  // 6. Return cleanup function (ctx.revert()) to prevent memory leaks
+  var cleanup = function () {
+    if (appGSAPContext) {
+      appGSAPContext.revert();
+      appGSAPContext = null;
+    }
+  };
+
+  window.cleanupGSAP = cleanup;
+  window.addEventListener("beforeunload", cleanup);
+  return cleanup;
 }
+
+var triggerAnimations = initGSAPAnimations;
 
 // NAVIGATION SYSTEM
 function initNavigation() {
@@ -2233,7 +2844,9 @@ function initThemeToggle() {
           : '<img src="public/icons/moon.svg" alt="Moon" style="width:14px;height:14px">';
       themeBtn.setAttribute(
         "title",
-        cur === "dark" ? "Ganti ke Mode Terang (Light Mode)" : "Ganti ke Mode Gelap (Dark Mode)"
+        cur === "dark"
+          ? "Ganti ke Mode Terang (Light Mode)"
+          : "Ganti ke Mode Gelap (Dark Mode)",
       );
     }
     syncThemeIcon();
@@ -2280,6 +2893,58 @@ function initBackToTop() {
       if (window.scrollY > 500) btt.classList.add("visible");
       else btt.classList.remove("visible");
     }
+  });
+}
+
+function initRegisterPrompt() {
+  var prompt = document.getElementById("registerPrompt");
+  var promptLink = document.getElementById("registerPromptLink");
+  var hero = document.getElementById("hero");
+  var registerSection = document.getElementById("register");
+  if (!prompt || !promptLink || !hero || !registerSection) return;
+
+  var heroPassed = false;
+  var registerVisible = false;
+  var dismissed = false;
+
+  function updatePrompt() {
+    var isVisible = heroPassed && !registerVisible && !dismissed;
+    prompt.classList.toggle("is-visible", isVisible);
+    prompt.setAttribute("aria-hidden", String(!isVisible));
+  }
+
+  function updateFromScroll() {
+    heroPassed = hero.getBoundingClientRect().bottom <= 0;
+    var registerBounds = registerSection.getBoundingClientRect();
+    registerVisible =
+      registerBounds.top < window.innerHeight && registerBounds.bottom > 0;
+    updatePrompt();
+  }
+
+  if ("IntersectionObserver" in window) {
+    var heroObserver = new IntersectionObserver(function (entries) {
+      heroPassed = !entries[0].isIntersecting &&
+        hero.getBoundingClientRect().bottom <= 0;
+      updatePrompt();
+    });
+    var registerObserver = new IntersectionObserver(
+      function (entries) {
+        registerVisible = entries[0].isIntersecting;
+        updatePrompt();
+      },
+      { threshold: 0.05 },
+    );
+    heroObserver.observe(hero);
+    registerObserver.observe(registerSection);
+  } else {
+    window.addEventListener("scroll", updateFromScroll, { passive: true });
+    window.addEventListener("resize", updateFromScroll);
+    updateFromScroll();
+  }
+
+  promptLink.addEventListener("click", function () {
+    dismissed = true;
+    updatePrompt();
   });
 }
 
@@ -2418,6 +3083,9 @@ function init() {
   safeInit("kiaiShockwave", initKiaiShockwave);
   safeInit("scrambleEffects", initScrambleEffects);
   safeInit("tiltCards", initTiltCards);
+  safeInit("enhanced3DTilt", initEnhanced3DTilt);
+  safeInit("passCard3DTilt", initPassCard3DTilt);
+  safeInit("senseiInteractions", initSenseiInteractions);
   safeInit("themeToggle", initThemeToggle);
   safeInit("audioToggle", initAudioToggle);
   safeInit("cursorToggle", initCursorToggle);
@@ -2426,6 +3094,8 @@ function init() {
   safeInit("calendarLinks", initCalendarLinks);
   safeInit("pdfButton", initPdfButton);
   safeInit("passClaim", initPassClaim);
+  safeInit("ticketFlip", initTicketFlip);
+  safeInit("registerPrompt", initRegisterPrompt);
   safeInit("waForm", initWaForm);
   safeInit("lightbox", initLightbox);
   safeInit("achievementShowcase", initAchievementShowcase);
