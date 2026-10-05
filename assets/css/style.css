@@ -1269,17 +1269,7 @@ p {
     animation: none !important;
   }
   body.mobile-performance-mode .history-photos.marquee-track {
-    width: 100%;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    animation: none !important;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-  }
-  body.mobile-performance-mode
-    .history-photos.marquee-track::-webkit-scrollbar {
-    display: none;
+    animation: dojoMarquee 28s linear infinite !important;
   }
   body.mobile-performance-mode .wa-preview-container {
     transform: none;
@@ -2517,7 +2507,7 @@ p {
   transform: translateY(0) !important;
 }
 .history-item:last-child {
-  padding-bottom: 0;
+  padding-bottom: 22px;
 }
 .history-dot {
   position: absolute;
@@ -2529,6 +2519,26 @@ p {
   border: 2px solid var(--gold);
   background: var(--bg);
   transition: background 0.3s;
+  z-index: 2;
+}
+.history-timeline-end-dot {
+  position: absolute;
+  left: 8px;
+  bottom: 2px;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  background: var(--bg);
+  transition:
+    background 0.3s,
+    box-shadow 0.3s;
+  z-index: 2;
+}
+.history-timeline.is-complete .history-dot,
+.history-timeline.is-complete .history-timeline-end-dot {
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.55);
 }
 .history-item:hover .history-dot {
   background: var(--gold);
@@ -2552,11 +2562,10 @@ p {
   font-size: 14px;
 }
 
-.history-photos {
+.history-gallery-viewport {
   margin-top: clamp(32px, 5vw, 56px);
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
+  width: 100%;
+  overflow: hidden;
 }
 .history-photo-item {
   position: relative;
@@ -2587,19 +2596,22 @@ p {
   color: var(--fg-muted);
 }
 .history-photos {
-  overflow: hidden;
+  width: max-content;
+  margin-top: 0;
   display: flex;
   gap: 16px;
+  overflow: visible;
 }
 .history-photos .history-photo-item {
   flex: 0 0 min(31vw, 390px);
 }
 .history-photos.marquee-track {
-  width: max-content;
   animation: dojoMarquee 28s linear infinite;
 }
-.history-photos:hover {
-  animation-play-state: paused;
+@media (hover: hover) and (pointer: fine) {
+  .history-photos:hover {
+    animation-play-state: paused;
+  }
 }
 @keyframes dojoMarquee {
   to {
@@ -2609,27 +2621,20 @@ p {
 
 @media (max-width: 1024px) {
   .history-photos.marquee-track {
-    width: 100%;
-    overflow-x: auto;
-    overscroll-behavior-x: contain;
-    scrollbar-width: none;
-    animation: none;
-    transform: none;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-  }
-  .history-photos.marquee-track::-webkit-scrollbar {
-    display: none;
+    animation-duration: 28s;
   }
   .history-photos .history-photo-item {
-    flex: 0 0 min(84vw, 390px);
-    scroll-snap-align: center;
+    flex: 0 0 min(72vw, 320px);
+  }
+  .history-photos {
+    align-items: flex-start;
   }
   .history-photos .history-photo-item img {
-    height: auto;
+    height: clamp(180px, 54vw, 220px);
     aspect-ratio: auto;
-    object-fit: contain;
+    object-fit: cover;
+    object-position: center 45%;
+    display: block;
   }
 }
 

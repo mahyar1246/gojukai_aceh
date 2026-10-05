@@ -2618,6 +2618,9 @@ function initGSAPAnimations() {
               start: "top 75%",
               end: "bottom 75%",
               scrub: true,
+              onUpdate: function (self) {
+                timelineEl.classList.toggle("is-complete", self.progress >= 1);
+              },
               onRefresh: function () {
                 var newLen = timelineEl.offsetHeight || 500;
                 progressLine.style.strokeDasharray = newLen;
@@ -2627,6 +2630,7 @@ function initGSAPAnimations() {
         } else {
           progressLine.style.strokeDasharray = "none";
           progressLine.style.strokeDashoffset = "0";
+          timelineEl.classList.add("is-complete");
         }
       }
 
